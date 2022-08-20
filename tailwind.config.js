@@ -4,7 +4,7 @@ module.exports = {
     extend: {
      backgroundColor: {
       "navbar": "#000",
-      "home": "rgb(233,213,255)",
+      "home": "rgb(250,245,255)",
       "primaryBackground": "rgb(107,33,168)"
      },
      colors: {
