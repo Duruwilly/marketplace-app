@@ -29,8 +29,9 @@ const OAuth = () => {
      timestamp: serverTimestamp()
     })
    }
+   navigate('/')
   } catch (error) {
-
+   toast.error('Failed to login with Google')
   }
  }
   return <div className='text-center cursor-pointer'>
