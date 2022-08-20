@@ -9,7 +9,7 @@ const SearchInput = ({ placeholder }) => {
       required
         type="text"
         placeholder={placeholder}
-        className="w-full max-w- py-3 pl-10 border-2 border-input-borde block shadow focus:outline-none"
+        className="w-full py-3 pl-10 border-2 block shadow focus:outline-none"
       />
     </div>
   );

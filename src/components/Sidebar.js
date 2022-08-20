@@ -19,8 +19,10 @@ const Sidebar = () => {
        to={menu.path}
        key={menu.name}
        className={({ isActive}) => (isActive ? activeLink : normalLink)}>
+        <div className='text-2xl'>
         {menu.icon}
-        <span className='capitalize'>{menu.name}</span>
+        </div>
+        <span className='capitalize text-base'>{menu.name}</span>
        </NavLink>
       ))}
      </div>

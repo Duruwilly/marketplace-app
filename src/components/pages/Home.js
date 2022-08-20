@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import SearchInput from "../SearchInput";
 import { CategoryData } from "../CategoryData";
 import Footer from "../Footer";
+import Logo from "../../assets/logo-plain2-1.png";
 
 const Home = () => {
   const [matches, setMatches] = useState(
@@ -18,19 +19,27 @@ const Home = () => {
     <section className="flex">
       {matches && <Sidebar />}
       <div className="flex-[6] bg-home">
-        <div className="mt-16">
-          <p className="px-4 mb-3 text-xl font-semibold">
-            Buying and selling used products within your institution made
-            easier.
-          </p>
-          <div className="px-4">
+          {!matches && 
+          <header className="bg-primaryBackground flex justify-center px-4">
+            <Link to="/" className="mx-0 mb-6">
+              <img src={Logo} alt="logo" className="h-16 mt-6" />
+            </Link>
+          </header>
+          }
+          <div className="px-4 bg-primaryBackground h-20 sticky top-0 z-20 w-full pt-2">
             <form>
               <SearchInput placeholder="search institution" />
             </form>
           </div>
+          <div className="bg-primaryBackground py-16 px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-4 lg:py-20 sm:text-center mb-16 sm:mb-0">
+            <div>
+              <h2 className="max-w-lg mb-5 font-sans text-3xl font-bold leading-none tracking-tight text-white sm:text-4xl md:mx-auto">The marketplace for student</h2>
+              <p className="text-base text-indigo-100 md:text-lg">Buying and selling products from friends within your institution made easier</p>
+            </div>
+          </div>
           <div className="px-4">
             <h1 className="mb-3 mt-5 font-bold text-2xl">
-              Some of the featured products
+              Featured products
             </h1>
             <div className="flex flex-wrap -m-4">
               {CategoryData.map((list) => (
@@ -86,7 +95,6 @@ const Home = () => {
             </div>
           </div>
           <Footer />
-        </div>
       </div>
     </section>
   );

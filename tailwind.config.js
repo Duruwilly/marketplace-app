@@ -3,8 +3,8 @@ module.exports = {
   theme: {
     extend: {
      backgroundColor: {
-      "navbar": "#131313",
-      "home": "rgb(238,238,238)",
+      "navbar": "#000",
+      "home": "rgb(233,213,255)",
       "primaryBackground": "rgb(107,33,168)"
      },
      colors: {

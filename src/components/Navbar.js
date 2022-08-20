@@ -21,7 +21,7 @@ const Navbar = () => {
         <div className='text-2xl'>
         {menu.icon}
         </div>
-        <p className='capitalize text-sm'>{menu.name}</p>
+        <p className='capitalize text-xs'>{menu.name}</p>
        </NavLink>
        ))}
       </div>
