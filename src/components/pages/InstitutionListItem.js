@@ -58,16 +58,17 @@ const InstitutionListItem = ({ listing, id, onDelete }) => {
     <section className="mx-auto container">
       <div className="w-full h-full shadow-lg border-2 border-gray-200 border-opacity-60 overflow-hidden rounded-lg">
         <div className="relative">
-          <Link to={`/institution/:institutionName/${listing.name}/${id}`}>
+          <Link to={`/institution/:institutionName/${listing.name|| listing.brand}/${id}`}>
             <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-b-lg shadow-xl overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
               <img
-                src={listing.imageURLS[0]}
-                alt={listing.name}
+                src={listing.imgUrls[0]}
+                alt={listing.name|| listing.brand}
                 className="w-full h-56 object-center object-cover group-hover:opacity-75"
               />
             </div>
             <div className='px-3 my-1'>
-            <h2 className="mt-4 text-black font-semibold">{listing.name}</h2>
+            <h2 className="mt-4 text-black font-semibold">{listing?.name}</h2>
+            <h2 className="mt-4 text-black font-semibold">{listing?.brand}</h2>
             <p className="text-sm text-gray-500 my-1">{listing?.condition}</p>
             <p className="text-sm text-gray-500 my-1">{listing.institution}</p>
             {listing.price !== "" && (
@@ -98,7 +99,7 @@ const InstitutionListItem = ({ listing, id, onDelete }) => {
           </Link>
           <div className="bg-[rgba(0,0,0,0.8)] absolute bottom-40 left-0 text-white w-1/4 rounded-sm text-sm">
             <div className="flex items-center gap-1 justify-center">
-              <p>{listing.imageURLS.length}</p> <AiFillCamera />
+              <p>{listing.imgUrls.length}</p> <AiFillCamera />
             </div>
           </div>
           <div className="absolute top-0 right-0">
