@@ -14,10 +14,7 @@ const Home = () => {
     setInstitutionName(e.target.value)
   }
 
-  let institutionCase = institutionName.toLocaleLowerCase()
-
-  console.log(institutionCase)
-
+  let institutionNameCase = institutionName.toLowerCase()
   
 
   const [matches, setMatches] = useState(
@@ -33,7 +30,7 @@ const Home = () => {
 
   const institutionSearch = (e) => {
     e.preventDefault()
-    navigate(`/institution/${institutionCase}`)
+    navigate(`/institution/${institutionNameCase}`)
   }
 
   

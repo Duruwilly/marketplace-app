@@ -58,17 +58,17 @@ const InstitutionListItem = ({ listing, id, onDelete }) => {
     <section className="mx-auto container">
       <div className="w-full h-full shadow-lg border-2 border-gray-200 border-opacity-60 overflow-hidden rounded-lg">
         <div className="relative">
-          <Link to={`/institution/:institutionName/${listing.name|| listing.brand}/${id}`}>
+          <Link to={`/institution/${listing.institution}/${listing.name || listing.model}/${id}`}>
             <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-b-lg shadow-xl overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
               <img
                 src={listing.imgUrls[0]}
-                alt={listing.name|| listing.brand}
+                alt={listing.name|| listing.model}
                 className="w-full h-56 object-center object-cover group-hover:opacity-75"
               />
             </div>
             <div className='px-3 my-1'>
             <h2 className="mt-4 text-black font-semibold">{listing?.name}</h2>
-            <h2 className="mt-4 text-black font-semibold">{listing?.brand}</h2>
+            <h2 className="mt-4 text-black font-semibold">{listing?.model}</h2>
             <p className="text-sm text-gray-500 my-1">{listing?.condition}</p>
             <p className="text-sm text-gray-500 my-1">{listing.institution}</p>
             {listing.price !== "" && (
@@ -84,7 +84,7 @@ const InstitutionListItem = ({ listing, id, onDelete }) => {
               <div className="border-b-4 border-b-indigo-800 w-full text-center py-1">
                 <a href={listing.mobileNumber}>Call</a>
               </div>
-              <div className="bg-purple-800 w-full text-center py-1">
+              <div className="bg-purple-800 w-full text-gray-200 text-center py-1">
                 <a href={listing.mobileNumber}>Chat</a>
               </div>
             </div>

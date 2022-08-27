@@ -143,7 +143,7 @@ const SellItem = () => {
    const docRef = await addDoc(collection(db, "listings"), formDataCopy);
    setLoading(false);
    toast.success("Listings added successfully");
-   navigate(`/category/${formDataCopy.brand}/${docRef.id}`);
+   navigate(`/institution/${formDataCopy.name || formDataCopy.model}/${docRef.id}`);
    setLoading(false)
  };
  
@@ -164,20 +164,10 @@ const SellItem = () => {
    }
  };
 
- const [matches, setMatches] = useState(
-   window.matchMedia("(min-width: 980px)").matches
- );
-
- useEffect(() => {
-   window
-     .matchMedia("(min-width: 980px)")
-     .addEventListener("change", (e) => setMatches(e.matches));
- }, []);
-
  if(loading) return <Spinner description='uploading...' />
   return (
     <section>
-        <header className="bg-primaryBackground flex justify-center px-4">
+        <header className="bg-primaryBackground flex justify-center px-4 sticky">
           <Link to="/" className="mx-0 mb-6">
             <img src={Logo} alt="logo" className="h-16 mt-6" />
           </Link>

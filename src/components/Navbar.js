@@ -5,13 +5,13 @@ import { Menu } from './MenuLinks'
 
 const Navbar = () => {
   const activeLink =
-    "flex items-center flex-col rounded-lg text-input-border";
+    "flex items-center flex-col rounded-lg text-input-border border-t border-white";
   const normalLink =
     "flex items-center flex-col rounded-lg text-white";
 
   return (
-    <footer className='fixed left-0 bottom-0 right-0 h-20 bg-navbar z-[1000] flex justify-center items-center'>
-     <nav className='w-full mt-3 overflow-y-hidden'>
+    <footer className='fixed left-0 bottom-0 right-0 h-16 bg-navbar z-[1000] flex justify-center items-center'>
+     <nav className='w-full overflow-y-hidden'>
       <div className='m-0 p-0 flex justify-evenly items-center'>
        {Menu.map((menu) => (
         <NavLink

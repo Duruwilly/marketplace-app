@@ -22,9 +22,9 @@ useEffect(() => {
     // create a query
     const q = query(
       listingsRef,
-      where("institution", "==", params.institutionCase),
+      where("institution", "==", params.institutionName),
       orderBy("timestamp", "desc"),
-      limit(10)
+      limit(12)
     );
 
     // Execute query
@@ -42,13 +42,13 @@ useEffect(() => {
     setLoading(false);
   };
   fetchListings();
-}, [params.institutionCase]);
+}, [params.InstitutionName]);
 
 const navigate = useNavigate();
 
 const productSearch = (e) => {
   e.preventDefault();
-  navigate(`/institution/${params.institutionCase}/${product}`);
+  navigate(`/institution/${params.institutionName}/${product}`);
 };
 
 const onChange = (e) => {
@@ -79,7 +79,7 @@ const onChange = (e) => {
          <h2 className="mt-5 mb-3 px-4">
            <span className="font-bold">{listings.length}</span> Ads in{" "}
            <span className="font-bold capitalize">
-             {params.institutionCase}
+             {params.institutionName}
            </span>
          </h2>
          <div className=" mx-auto pb-24 px-4">
@@ -111,7 +111,7 @@ const onChange = (e) => {
        <div>
          <div className="max-w-2xl mx-auto py- px-4 sm:py- sm:px-6 lg:max-w-7xl lg:px-8">
            <h2 className="text-2xl font-extrabold tracking-tight text-gray-500 m-auto">
-             No products from {params.institutionCase} return to home and try
+             No products from {params.institutionName} return to home and try
              another search!
            </h2>
          </div>
