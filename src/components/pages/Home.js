@@ -14,6 +14,12 @@ const Home = () => {
     setInstitutionName(e.target.value)
   }
 
+  let institutionCase = institutionName.toLocaleLowerCase()
+
+  console.log(institutionCase)
+
+  
+
   const [matches, setMatches] = useState(
     window.matchMedia('(min-width: 980px)').matches
   )
@@ -27,9 +33,10 @@ const Home = () => {
 
   const institutionSearch = (e) => {
     e.preventDefault()
-    navigate(`/institution/${institutionName}`)
+    navigate(`/institution/${institutionCase}`)
   }
 
+  
   return (
     <section>
       <div>

@@ -14,12 +14,17 @@ import InstitutionSearch from './components/pages/InstitutionSearch';
 import Sidebar from './components/Sidebar';
 import InstitutionListItem from './components/pages/InstitutionListItem';
 import SellItem from './components/pages/SellItem';
-
+import Logo from "./assets/logo-plain2-1.png";
 
 function App() {
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 980px)").matches
   );
+  const [loading, setLoading] = useState(true);
+
+  setTimeout(() => {
+    setLoading(false)
+  }, 2500);
 
   useEffect(() => {
     window
@@ -27,6 +32,7 @@ function App() {
       .addEventListener("change", (e) => setMatches(e.matches));
   }, []);
 
+  if (loading) return <div className='bg-primaryBackground h-screen w-full flex justify-center items-center px-4'><img src={Logo} alt="logo" className="h-16 mt-6" /></div>;
   return (
     <>
       <BrowserRouter>
@@ -36,7 +42,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path='/institution/:institutionName' element={<InstitutionSearch />} />
+          <Route path='/institution/:institutionCase' element={<InstitutionSearch />} />
           <Route path='/institution/:productName/:productID' element={<InstitutionListItem />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
