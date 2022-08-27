@@ -134,7 +134,16 @@ const SellItem = () => {
      return;
    });
    
-   console.log(imgUrls);
+   const formDataCopy = {
+     ...formData,
+     imgUrls,
+     timestamp: serverTimestamp(),
+   };
+   delete formDataCopy.images;
+   const docRef = await addDoc(collection(db, "listings"), formDataCopy);
+   setLoading(false);
+   toast.success("Listings added successfully");
+   navigate(`/category/${formDataCopy.brand}/${docRef.id}`);
    setLoading(false)
  };
  
