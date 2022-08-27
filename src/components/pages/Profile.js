@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Sidebar from "../Sidebar";
 import { getAuth, updateProfile } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { db } from "../../firebase.config";
-import { updateDoc, doc } from "firebase/firestore";
+import { updateDoc, doc, getDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 
 const Profile = () => {
@@ -18,19 +18,24 @@ const Profile = () => {
   }, []);
 
   const profileName =
-    "appearance-none rounded-none relative block w-full px-3 py-2 font-semibold bg-transparent focus:outline-none";
+    "appearance-none rounded-none relative block w-full px-3 py-2 bg-transparent focus:outline-none";
   const profileNameActive =
-    "appearance-none rounded-none relative block w-full px-3 py-2  font-semibold border-gray-500 border bg-transparent focus:outline-none";
+    "appearance-none rounded-none relative block w-full px-3 py-2 border-gray-500 border-b bg-transparent focus:outline-none";
 
   const auth = getAuth();
-  const [changeDetails, setChangeDetails] = useState(false);
-  const [formData, setFormData] = useState({
-    name: auth.currentUser.displayName,
-    email: auth.currentUser.email,
-    mobileNumber: auth.currentUser.phoneNumber,
+
+  const [user, setUser] = useState({
+    userName: '',
+    userNumber: '',
   });
 
-  const { name, email, mobileNumber } = formData;
+  const textref = useRef(null)
+  const [changeDetails, setChangeDetails] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    number: '',
+  });
 
   const navigate = useNavigate();
 
@@ -39,23 +44,56 @@ const Profile = () => {
     navigate("/");
   };
 
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const docRef = doc(db, 'users', auth.currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      const userProfile = docSnap.data();
+      setUser((prevState) => ({
+        ...prevState,
+        userName: userProfile.name,
+        userNumber: userProfile.mobileNumber,
+      }));
+      setFormData((prevState) => ({
+        ...prevState,
+        name: userProfile.name,
+        email: userProfile.email,
+        number: userProfile.mobileNumber,
+      }));
+
+    }
+    fetchUserDetails();
+  }, [auth.currentUser.uid]);
+
+  const { userName, userNumber } = user;
   const onSubmit = async () => {
     try {
-      if (auth.currentUser.displayName !== name) {
+      if (name !== userName || number !== userNumber) {
         //update display name in fb
         await updateProfile(auth.currentUser, {
           displayName: name,
+          mobileNumber: number,
         });
-
-        // update in firestore
-        const userRef = doc(db, "users", auth.currentUser.uid);
-        await updateDoc(userRef, {
-          name,
-        });
+      } else if (name === userName && number === userNumber) {
+        toast.error("No changes was made", { toastId: "6yfvyuwevyufgvwefyuv" });
+        return;
       }
+      // update in firestore
+      const userRef = doc(db, "users", auth.currentUser.uid);
+      await updateDoc(userRef, {
+        name: name,
+        mobileNumber: number,
+      });
+      toast.success("Profile updated", { toastId: "6yfvyuwevyufgvwefyuv" });
     } catch (error) {
-      toast.error("could not update profle details");
+      toast.error("could not update profle details", {
+        toastId: "6yfvyuwevyufgvwefyuv",
+      });
     }
+  };
+
+  const onfocusElem = () => {
+    textref.current.focus();
   };
 
   const onChange = (e) => {
@@ -64,14 +102,13 @@ const Profile = () => {
       [e.target.id]: e.target.value,
     }));
   };
+  const { name, email, number } = formData;
 
   return (
     <section className="flex">
-      { matches &&
-      <Sidebar />
-      }
+      
       <div className="flex-[6] bg-home">
-        <div className="mb-4">
+        <div className="h-screen">
           <header className="bg-navbar text-white py-1 px-4">
             <p className="font-bold text-xl">Welcome {name}</p>
             <p>{email}</p>
@@ -105,21 +142,24 @@ const Profile = () => {
                     disabled={!changeDetails}
                     value={name}
                     onChange={onChange}
+                    ref={textref}
                   />
                   <input
                     type="text"
                     id="email"
                     className={!changeDetails ? profileName : profileNameActive}
-                    disabled={!changeDetails}
+                    disabled
+                    readOnly
                     value={email}
-                    onChange={onChange}
+                    
                   />
                   <input
                     type="tel"
-                    id="mobileNumber"
+                    id="number"
                     className={!changeDetails ? profileName : profileNameActive}
                     disabled={!changeDetails}
-                    value={mobileNumber}
+                    autoFocus={changeDetails}
+                    value={number}
                     onChange={onChange}
                   />
                 </form>

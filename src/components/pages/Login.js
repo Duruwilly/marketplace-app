@@ -27,6 +27,10 @@ const Login = () => {
   })
   const { email, password } = formData
 
+  const passwordToggle = () => {
+    setShowPassword((prevState) => !prevState);
+  }
+  
   const navigate = useNavigate()
 
   const onChange = (e) => {
@@ -48,19 +52,16 @@ const Login = () => {
       navigate('/')
     }  
     } catch (error) {
-      toast.error('Bad User Credentials')
+      toast.error('invalid User')
     }
   }
 
   return (
-    <section className="flex">
-    { matches && 
-      <Sidebar />
-    }
-      <main className="flex-[6] bg-home">
+    <section>
+      <main>
         <div>
           <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-12">
-            <div className="max-w-md w-full space-y-8">
+            <div className="max-w-md w-full space-y-5">
                 <h2 className="text-center text-3xl font-extrabold text-gray-900">
                   Welcome Back!
                 </h2>
@@ -87,13 +88,22 @@ const Login = () => {
                     className={inputStyle}
                     onChange={onChange}
                   />
-
-                  <FaEye
+                  {!showPassword &&  
+                    <FaEye
                     className="absolute top-3 right-1 cursor-pointer"
                     size={15}
                     color="#1e1e1e"
-                    onClick={() => setShowPassword((prevState) => !prevState)}
-                  />
+                    onClick={passwordToggle}
+                    />
+                  }
+                  {showPassword &&  
+                    <FaEyeSlash
+                    className="absolute top-3 right-1 cursor-pointer"
+                    size={15}
+                    color="#1e1e1e"
+                    onClick={passwordToggle}
+                    />
+                  }
                 </div>
                 <Link to="/forgot-password">
                   <p className="text-center text-indigo-700 font-medium underline mt-1">
@@ -114,6 +124,7 @@ const Login = () => {
                   Sign up
                 </Link>
               </p>
+              <p className="text-center text-xs">By continuing you agree to the Policy and Rules of Willtta</p>
             </div>
           </div>
         </div>

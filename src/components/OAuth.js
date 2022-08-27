@@ -34,10 +34,18 @@ const OAuth = () => {
    toast.error('Failed to login with Google')
   }
  }
-  return <div className='text-center cursor-pointer'>
-   <p>Sign {location.pathname === '/register' ? 'up' : 'in'} with Google instead</p>
-   <FcGoogle onClick={onGoogleClick} />
-  </div>
+  return (
+    <div
+      className="text-center cursor-pointer group relative w-full flex justify-center items-center gap-3 py-2 px-4 text-lg font-medium rounded-md bg-white shadow"
+      onClick={onGoogleClick}
+    >
+      <p>
+        Sign {location.pathname === "/register" ? "up" : "in"} with Google
+        instead
+      </p>
+      <FcGoogle />
+    </div>
+  );
 }
 
 export default OAuth

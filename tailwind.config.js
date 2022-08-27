@@ -9,6 +9,7 @@ module.exports = {
      },
      colors: {
       "input-border": "rgb(107,33,168)",
+      "primaryColor": "rgb(107,33,168)"
      },
     },
   },

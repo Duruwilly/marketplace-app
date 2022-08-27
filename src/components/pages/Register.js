@@ -82,9 +82,7 @@ const Register = () => {
   
   return (
     <section className="flex">
-      { matches && 
-      <Sidebar />
-      }
+      {matches && <Sidebar />}
       <main className="flex-[6] bg-home">
         <div>
           <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-12">
@@ -152,6 +150,9 @@ const Register = () => {
                 >
                   Sign in
                 </Link>
+              </p>
+              <p className="text-center text-xs">
+                By continuing you agree to the Policy and Rules of Willtta
               </p>
             </div>
           </div>

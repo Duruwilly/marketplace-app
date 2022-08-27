@@ -2,6 +2,7 @@
 
 body {
   font-family: 'Montserrat', sans-serif;
+  background: #f2f4f8;
 }
 
 * {
@@ -12,7 +13,6 @@ body {
 
 .spin {
   height: 100vh;
-  width: 100vw;
   position: relative;
   top: 0;
 }
@@ -23,7 +23,7 @@ body {
 
 .loader span {
   position: absolute;
-  color: rgba(0, 0, 254, 0.913);
+  color: rgba(107, 33, 168, 0.913);
   transform: translate(-50%, -50%);
   font-size: 35px;
   margin-left: 50%;
@@ -32,11 +32,11 @@ body {
 
 .loader span:nth-child(1) {
   color: transparent;
-  -webkit-text-stroke: 0.3px rgba(0, 0, 254, 0.913);
+  -webkit-text-stroke: 0.3px rgba(107, 33, 168, 0.913);
 }
 
 .loader span:nth-child(2) {
-  color: rgba(55, 55, 244, 0.603);
+  color: rgba(107, 33, 168, 0.603);
   -webkit-text-stroke: 1px rgba(0, 0, 254, 0.913);
   animation: uiverse723 3s ease-in-out infinite;
 }
@@ -72,6 +72,37 @@ body {
   }
 }
 
+.spinnerContainer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(107, 33, 168, 0.4);
+  z-index: 5000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinne {
+  width: 64px;
+  height: 64px;
+  border: 8px solid;
+  border-color: rgb(107, 33, 168) transparent rgb(107, 33, 168)transparent;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 @tailwind base;
 @tailwind components;

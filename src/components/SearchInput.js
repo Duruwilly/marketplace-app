@@ -3,7 +3,7 @@ import { HiSearch } from "react-icons/hi";
 
 const SearchInput = ({ placeholder }) => {
   return (
-    <div className="flex gap-5 w-full max-w- items-center shadow-2xl text-xl">
+    <div className="flex gap-5 w-full items-center shadow-2xl text-xl">
       <HiSearch className="absolute ml-3 text-gray-400" />
       <input
       required

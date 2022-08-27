@@ -9,7 +9,7 @@ const Sidebar = () => {
  const normalLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white text-xl m-2'
   return (
     <div className='bg-navbar min-h-screen flex-[2]'>
-     <div className='py-3 px-4'>
+     <div className='py-3 px-4 sticky left-0 right- top-0'>
      <Link to='/'>
       <img src={Logo} alt="logo" className='h-16 mt-6' />
      </Link>

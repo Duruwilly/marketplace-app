@@ -10,6 +10,10 @@ import Home from "./components/pages/Home";
 import Login from "./components/pages/Login";
 import Register from "./components/pages/Register";
 import Profile from "./components/pages/Profile";
+import InstitutionSearch from './components/pages/InstitutionSearch';
+import Sidebar from './components/Sidebar';
+import InstitutionListItem from './components/pages/InstitutionListItem';
+import SellItem from './components/pages/SellItem';
 
 
 function App() {
@@ -26,15 +30,24 @@ function App() {
   return (
     <>
       <BrowserRouter>
+      <div className='flex'>
+      {matches && <Sidebar />}
+      <div className='flex-[6]'>
+
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path='/institution/:institutionName' element={<InstitutionSearch />} />
+          <Route path='/institution/:productName/:productID' element={<InstitutionListItem />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/sell" element={<SellItem />} />
           <Route path="/profile" element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
+      </div>
+        </div>
         { !matches &&
         <Navbar />
         }
