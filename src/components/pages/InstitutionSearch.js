@@ -89,21 +89,6 @@ const onChange = (e) => {
                  <InstitutionListItem listing={listing.data} id={listing.id} />
                </div>
              ))}
-             {listings?.map((listing) => (
-               <div key={listing.id} className="group relative">
-                 <InstitutionListItem listing={listing.data} id={listing.id} />
-               </div>
-             ))}
-             {listings?.map((listing) => (
-               <div key={listing.id} className="group relative">
-                 <InstitutionListItem listing={listing.data} id={listing.id} />
-               </div>
-             ))}
-             {listings?.map((listing) => (
-               <div key={listing.id} className="group relative">
-                 <InstitutionListItem listing={listing.data} id={listing.id} />
-               </div>
-             ))}
            </div>
          </div>
        </div>

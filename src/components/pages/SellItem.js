@@ -53,6 +53,9 @@ const SellItem = () => {
    images,
  } = formData;
 
+ let institutionCase = institution.toLowerCase()
+ console.log(institutionCase)
+
  const auth = getAuth()
  const navigate = useNavigate()
  const isMounted = useRef(true)
