@@ -54,7 +54,7 @@ const SellItem = () => {
  } = formData;
 
  let institutionCase = institution.toLowerCase()
- console.log(institutionCase)
+ console.log(institution)
 
  const auth = getAuth()
  const navigate = useNavigate()
@@ -288,7 +288,7 @@ const SellItem = () => {
                         type="text"
                         required
                         className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        value={institution}
+                        value={institutionCase}
                         placeholder="Institution"
                         onChange={onChange}
                       />
