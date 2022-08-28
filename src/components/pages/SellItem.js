@@ -22,7 +22,7 @@ const SellItem = () => {
  const [formData, setFormData] = useState({
    name: "",
    model: "",
-   institution: "",
+   institutionCase: "",
    battery: "",
    condition: "",
    price: "",
@@ -46,14 +46,14 @@ const SellItem = () => {
    brand,
    price,
    condition,
-   institution,
+   institutionCase,
    description,
    mobileNumber,
    categories,
    images,
  } = formData;
 
- let institutionCase = institution.toLowerCase()
+ let institution = institutionCase.toLowerCase()
 
  const auth = getAuth()
  const navigate = useNavigate()
@@ -140,16 +140,16 @@ const SellItem = () => {
    const formDataCopy = {
      ...formData,
      imgUrls,
-     institutionCase,
+     institution,
      timestamp: serverTimestamp(),
     };
     
     delete formDataCopy.images;
-    delete formDataCopy.institution;
+    delete formDataCopy.institutionCase;
     const docRef = await addDoc(collection(db, "listings"), formDataCopy);
     setLoading(false);
     toast.success("Listings added successfully");
-    navigate(`/institution/${formDataCopy.name || formDataCopy.model}/${docRef.id}`);
+    navigate(`/institutionCase/${formDataCopy.name || formDataCopy.model}/${docRef.id}`);
     setLoading(false)
   };
 
@@ -284,12 +284,12 @@ const SellItem = () => {
                         Institution
                       </label>
                       <input
-                        name="institution"
-                        id="institution"
+                        name="institutionCase"
+                        id="institutionCase"
                         type="text"
                         required
                         className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        value={institution}
+                        value={institutionCase}
                         placeholder="Institution"
                         onChange={onChange}
                       />
@@ -518,12 +518,12 @@ const SellItem = () => {
                         Institution
                       </label>
                       <input
-                        name="institution"
-                        id="institution"
+                        name="institutionCase"
+                        id="institutionCase"
                         type="text"
                         required
                         className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        value={institution}
+                        value={institutionCase}
                         placeholder="Institution"
                         onChange={onChange}
                       />
@@ -641,12 +641,12 @@ const SellItem = () => {
                         Institution
                       </label>
                       <input
-                        name="institution"
-                        id="institution"
+                        name="institutionCase"
+                        id="institutionCase"
                         type="text"
                         required
                         className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        value={institution}
+                        value={institutionCase}
                         placeholder="Institution"
                         onChange={onChange}
                       />
@@ -762,12 +762,12 @@ const SellItem = () => {
 
                     <div className="mt-4">
                       <input
-                        name="institution"
-                        id="institution"
+                        name="institutionCase"
+                        id="institutionCase"
                         type="text"
                         required
                         className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        value={institution}
+                        value={institutionCase}
                         placeholder="Institution"
                         onChange={onChange}
                       />
@@ -883,12 +883,12 @@ const SellItem = () => {
 
                     <div className="mt-4">
                       <input
-                        name="institution"
-                        id="institution"
+                        name="institutionCase"
+                        id="institutionCase"
                         type="text"
                         required
                         className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        value={institution}
+                        value={institutionCase}
                         placeholder="Institution"
                         onChange={onChange}
                       />
@@ -980,12 +980,12 @@ const SellItem = () => {
 
                     <div className="mt-4">
                       <input
-                        name="institution"
-                        id="institution"
+                        name="institutionCase"
+                        id="institutionCase"
                         type="text"
                         required
                         className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        value={institution}
+                        value={institutionCase}
                         placeholder="Institution"
                         onChange={onChange}
                         disabled={categories === ""}
