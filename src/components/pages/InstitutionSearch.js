@@ -22,7 +22,7 @@ useEffect(() => {
     // create a query
     const q = query(
       listingsRef,
-      where("institution", "==", params.institutionName),
+      where("institutionCase", "==", params.institutionName),
       orderBy("timestamp", "desc"),
       limit(12)
     );

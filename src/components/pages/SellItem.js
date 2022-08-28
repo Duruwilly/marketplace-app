@@ -53,10 +53,7 @@ const SellItem = () => {
    images,
  } = formData;
 
- 
-
  let institutionCase = institution.toLowerCase()
- 
 
  const auth = getAuth()
  const navigate = useNavigate()
