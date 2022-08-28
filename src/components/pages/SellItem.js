@@ -142,7 +142,7 @@ const SellItem = () => {
     const docRef = await addDoc(collection(db, "listings"), formDataCopy);
     setLoading(false);
     toast.success("Listings added successfully");
-    navigate(`/institutionCase/${formDataCopy.institutionCase}/${
+    navigate(`/institution/${formDataCopy.institution}/${
     formDataCopy.name || formDataCopy.model
     }/${docRef.id}`)
     setLoading(false)
