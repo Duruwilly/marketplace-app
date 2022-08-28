@@ -16,6 +16,7 @@ import InstitutionListItem from './components/pages/InstitutionListItem';
 import SellItem from './components/pages/SellItem';
 import Logo from "./assets/logo-plain2-1.png";
 import Listings from './components/pages/Listings';
+import Myproduct from './components/pages/MyProduct';
 
 function App() {
   const [matches, setMatches] = useState(
@@ -49,6 +50,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/sell" element={<SellItem />} />
+          <Route path="/my-product" element={<Myproduct />} />
           <Route path="/profile" element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
           </Route>

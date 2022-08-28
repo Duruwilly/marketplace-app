@@ -123,7 +123,7 @@ const Profile = () => {
                 <Link to="/">Favourites</Link>
               </p>
               <p>
-                <Link to="/">view adverts</Link>
+                <Link to="/my-product">view adverts</Link>
               </p>
               <p>
                 <Link to="/">Recently viewed</Link>

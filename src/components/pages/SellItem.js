@@ -79,16 +79,9 @@ const SellItem = () => {
  const submitForm = async (e) => {
    e.preventDefault();
    setLoading(true);
-   if (brand === "") {
+   if (images.length > 5) {
      setLoading(false);
-     toast.error("Please select phone Brand", {
-       toastId: "gcyuch45ub65756%^",
-     });
-     return;
-   }
-   if (images.length > 4) {
-     setLoading(false);
-     toast.error("Images should not exceed 4", { toastId: "gcyuch45ub657" });
+     toast.error("Images should not exceed 5", { toastId: "gcyuch45ub657" });
      return;
    }
 
@@ -149,7 +142,9 @@ const SellItem = () => {
     const docRef = await addDoc(collection(db, "listings"), formDataCopy);
     setLoading(false);
     toast.success("Listings added successfully");
-    navigate(`/institutionCase/${formDataCopy.name || formDataCopy.model}/${docRef.id}`);
+    navigate(`/institutionCase/${formDataCopy.institutionCase}/${
+    formDataCopy.name || formDataCopy.model
+    }/${docRef.id}`)
     setLoading(false)
   };
 

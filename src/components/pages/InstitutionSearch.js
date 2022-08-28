@@ -31,7 +31,6 @@ useEffect(() => {
     const querySnap = await getDocs(q);
 
     let listings = [];
-
     querySnap.forEach((doc) => {
       return listings.push({
        id: doc.id,
@@ -86,7 +85,8 @@ const onChange = (e) => {
            <div className="grid grid-cols-2 md:grid-cols-3 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
              {listings?.map((listing) => (
                <div key={listing.id} className="group relative">
-                 <InstitutionListItem listing={listing.data} id={listing.id} />
+                 <InstitutionListItem listing={listing.data}
+                  id={listing.id} />
                </div>
              ))}
            </div>

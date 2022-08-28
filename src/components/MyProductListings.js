@@ -1,60 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { addDoc, collection, serverTimestamp, doc, getDoc } from "firebase/firestore";
-import { db } from "../../firebase.config";
-import { toast } from "react-toastify";
-import { HiSearch } from "react-icons/hi";
 import { AiFillCamera, AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
+import { Link } from 'react-router-dom'
 
-
-const InstitutionListItem = ({ listing, id }) => {
-  const [heart, setHeart] = useState(false)
-
-  const activeHeart =
-    "rounded-full w-5 h-5 p-0 border-0 inline-flex items-center justify-center ml-4 text- bg-primaryBackground  text-xl m-2";
-  const normalHeart =
-    "rounded-full w-5 h-5 border-0 inline-flex bg-primaryBackground p-0 items-center justify-center ml-4 text-xl m-2";
-
- const params = useParams();
-
-  const auth = getAuth();
-  const addToFavourite = async (listing) => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        addItem();
-        toast.success("Item added to favourite", { toastId: "r34-xAcu9#@(*" });
-      } else if (!user) {
-        toast.info("Please signup or log in", { toastId: "r34-xAcu9#@(*" });
-        return;
-      }
-    });
-    const addItem = async () => {
-      const favouriteItem = {
-        ...listing,
-        wishRef: auth.currentUser.uid,
-        timestamp: serverTimestamp(),
-      };
-      console.log(favouriteItem);
-      try {
-        await addDoc(collection(db, "favouritelists"), favouriteItem);
-      } catch (error) {
-        toast.error("An error occured");
-      }
-    };
-  };
-
-  {listing.model.length === 1 ? console.log(true) : console.log(false)}
-
-  console.log(listing.model.length)
-  
-  const navigate = useNavigate();
-
-  const itemSearch = (e) => {
-    e.preventDefault();
-    navigate("/institution/id");
-  };
+const MyProductListings = ({ listing, id, handleDelete }) => {
 
   return (
     <section className="mx-auto container">
@@ -104,18 +53,19 @@ const InstitutionListItem = ({ listing, id }) => {
               <p>{listing.imgUrls.length}</p> <AiFillCamera />
             </div>
           </div>
-          <div className="absolute top-0 right-0">
-            <button
-              onClick={addToFavourite}
-              className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4 hover:bg-purple-300"
-            >
-              <AiFillHeart />
-            </button>
-          </div>
+
+          {handleDelete && (<div className="absolute top-0 right-0">
+          <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4" onClick={() => 
+           handleDelete(listing.id, listing.name || listing.model)
+          }>
+            <MdDelete className="w-5 h-5" />
+
+          </button>
+          </div>)}
         </div>
       </div>
     </section>
   );
 };
 
-export default InstitutionListItem;
+export default MyProductListings;
