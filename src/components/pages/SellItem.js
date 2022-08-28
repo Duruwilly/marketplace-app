@@ -53,8 +53,10 @@ const SellItem = () => {
    images,
  } = formData;
 
+ 
+
  let institutionCase = institution.toLowerCase()
- console.log(institution)
+ 
 
  const auth = getAuth()
  const navigate = useNavigate()
@@ -137,20 +139,22 @@ const SellItem = () => {
      return;
    });
    
+   console.log(formDataCopy)
    const formDataCopy = {
      ...formData,
      imgUrls,
+     institutionCase,
      timestamp: serverTimestamp(),
-   };
-   delete formDataCopy.images;
-   const docRef = await addDoc(collection(db, "listings"), formDataCopy);
-   setLoading(false);
-   toast.success("Listings added successfully");
-   navigate(`/institution/${formDataCopy.name || formDataCopy.model}/${docRef.id}`);
-   setLoading(false)
- };
- 
- 
+    };
+    
+    delete formDataCopy.images;
+    delete formDataCopy.institution;
+    const docRef = await addDoc(collection(db, "listings"), formDataCopy);
+    setLoading(false);
+    toast.success("Listings added successfully");
+    navigate(`/institution/${formDataCopy.name || formDataCopy.model}/${docRef.id}`);
+    setLoading(false)
+  };
 
  const onChange = (e) => {
    if (e.target.files) {
@@ -288,7 +292,7 @@ const SellItem = () => {
                         type="text"
                         required
                         className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        value={institutionCase}
+                        value={institution}
                         placeholder="Institution"
                         onChange={onChange}
                       />
