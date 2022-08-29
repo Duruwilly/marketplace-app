@@ -5,18 +5,17 @@ import 'react-toastify/dist/ReactToastify.css'
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
-import ForgotPassword from "./components/pages/ForgotPassword";
-import Home from "./components/pages/Home";
-import Login from "./components/pages/Login";
-import Register from "./components/pages/Register";
-import Profile from "./components/pages/Profile";
-import InstitutionSearch from './components/pages/InstitutionSearch';
+import ForgotPassword from "./pages/ForgotPassword";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+import InstitutionSearch from './pages/InstitutionSearch';
 import Sidebar from './components/Sidebar';
-import InstitutionListItem from './components/pages/InstitutionListItem';
-import SellItem from './components/pages/SellItem';
+import SellItem from './pages/SellItem';
 import Logo from "./assets/logo-plain2-1.png";
-import Listings from './components/pages/Listings';
-import Myproduct from './components/pages/MyProduct';
+import Listings from './pages/Listings';
+import Myproduct from './pages/MyProduct';
 
 function App() {
   const [matches, setMatches] = useState(

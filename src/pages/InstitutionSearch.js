@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react'
 import {Link, useNavigate, useParams} from 'react-router-dom'
 import { collection, getDocs, query, where, orderBy, limit, startAfter } from 'firebase/firestore'
-import {db} from '../../firebase.config'
+import {db} from '../firebase.config'
 import {toast} from 'react-toastify'
-import Spinner from '../Spinner'
+import Spinner from '../components/Spinner'
 import InstitutionListItem from './InstitutionListItem'
 import { HiSearch } from 'react-icons/hi'
 
@@ -11,6 +11,7 @@ const InstitutionSearch = () => {
 const [listings, setListings] = useState(null);
 const [loading, setLoading] = useState(true);
 const [product, setProduct] = useState("");
+const [lastFetchedListing, setLastFetchedListing] = useState(null);
 
 const params = useParams();
 
@@ -30,6 +31,8 @@ useEffect(() => {
     // Execute query
     const querySnap = await getDocs(q);
 
+    const lastVisible = querySnap.docs[querySnap.docs.length -1]
+    setLastFetchedListing(lastVisible)
     let listings = [];
     querySnap.forEach((doc) => {
       return listings.push({
@@ -42,6 +45,36 @@ useEffect(() => {
   };
   fetchListings();
 }, [params.InstitutionName]);
+
+// pagination / Load more
+const onFetchMoreListings = async () => {
+    // Get reference
+    const listingsRef = collection(db, "listings");
+
+    // create a query
+    const q = query(
+      listingsRef,
+      where("institution", "==", params.institutionName),
+      orderBy("timestamp", "desc"),
+      startAfter(lastFetchedListing),
+      limit(12)
+    );
+
+    // Execute query
+    const querySnap = await getDocs(q);
+
+    const lastVisible = querySnap.docs[querySnap.docs.length -1]
+    setLastFetchedListing(lastVisible)
+    let listings = [];
+    querySnap.forEach((doc) => {
+      return listings.push({
+       id: doc.id,
+       data: doc.data()
+      })
+    });
+    setListings((prevState) => [...prevState, ...listings]);
+    setLoading(false);
+  };
 
 const navigate = useNavigate();
 
@@ -90,6 +123,11 @@ const onChange = (e) => {
                </div>
              ))}
            </div>
+         <br />
+         <br />
+         {lastFetchedListing && (
+          <p className='bg-black font-semibold text-white rounded-full px-1 w-1/4 text-center my-0 mx-auto cursor-pointer' onClick={onFetchMoreListings}>Load More</p>
+         )}
          </div>
        </div>
      ) : (

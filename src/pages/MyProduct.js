@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Logo from "../../assets/logo-plain2-1.png";
+import Logo from "../assets/logo-plain2-1.png";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   collection,
@@ -12,10 +12,10 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import { db } from "../../firebase.config";
+import { db } from "../firebase.config";
 import { toast } from "react-toastify";
-import Spinner from "../../components/Spinner";
-import MyProductListings from "../MyProductListings";
+import Spinner from "../components/Spinner";
+import MyProductListings from "../components/MyProductListings";
 const Myproduct = () => {
   const [myProducts, setMyProducts] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -75,7 +75,7 @@ const Myproduct = () => {
     <>
       {myProducts?.length > 0 ? (
         <div>
-          <header className="bg-primaryBackground flex justify-center px-4 sticky">
+          <header className="bg-primaryBackground flex justify-center px-4 sticky top-0 z-20">
             <Link to="/" className="mx-0 mb-6">
               <img src={Logo} alt="logo" className="h-16 mt-6" />
             </Link>

@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import {toast} from 'react-toastify'
-import FormInput from "../FormInput";
-import Sidebar from "../Sidebar";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth'
-import { db } from '../../firebase.config'
-import Button from "../Button";
-import OAuth from "../OAuth";
+import { db } from '../firebase.config'
+import Button from "../components/Button";
+import OAuth from "../components/OAuth";
 
 const Login = () => {
   const [matches, setMatches] = useState(

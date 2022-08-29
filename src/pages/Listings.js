@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getDoc, doc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { db } from "../../firebase.config";
-import Spinner from "../Spinner";
-import Logo from "../../assets/logo-plain2-1.png";
+import { db } from "../firebase.config";
+import Spinner from "../components/Spinner";
+import Logo from "../assets/logo-plain2-1.png";
 
 const Listings = () => {
   const [listing, setListing] = useState(null);
@@ -36,7 +36,7 @@ const Listings = () => {
     return <Spinner description="loading..." />;
   return (
     <section>
-      <header className="bg-primaryBackground flex justify-center px-4 sticky">
+      <header className="bg-primaryBackground flex justify-center px-4 sticky top-0 z-20">
         <Link to="/" className="mx-0 mb-6">
           <img src={Logo} alt="logo" className="h-16 mt-6" />
         </Link>
@@ -74,6 +74,9 @@ const Listings = () => {
                   />
                 </span>
               ))}
+            </div>
+            <div className="text-white absolute m-auto px-1 top-0 bg-opacity-40 text-opacity-80 bg-white rounded-lg">
+              <p>WILLTTA</p>
             </div>
             <div className="grid grid-cols-2 gap-5 text-gray-300 font-semibold mt-2">
               <a

@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import FormInput from "../FormInput";
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth'
 import {toast} from 'react-toastify'
-import Sidebar from "../Sidebar";
 import { Link } from "react-router-dom";
-import Button from "../Button";
+import Button from "../components/Button";
 
 const ForgotPassword = () => {
   const [matches, setMatches] = useState(
@@ -35,8 +33,7 @@ const ForgotPassword = () => {
   }
   return (
     <section className="flex">
-      {matches && <Sidebar />}
-      <main className="flex-[6] bg-home">
+      <main>
         <div>
           <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-12">
             <div className="max-w-md w-full space-y-8">

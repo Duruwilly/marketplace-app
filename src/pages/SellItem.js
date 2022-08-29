@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { FaArrowCircleRight } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../../assets/logo-plain2-1.png";
-import { Categories } from "../Categories";
+import Logo from "../assets/logo-plain2-1.png";
+import { Categories } from "../components/Categories";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   getStorage,
@@ -12,10 +12,10 @@ import {
 } from "firebase/storage";
 
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { db } from "../../firebase.config";
+import { db } from "../firebase.config";
 import { toast } from "react-toastify";
 import {v4 as uuidv4} from 'uuid'
-import Spinner from "../../components/Spinner";
+import Spinner from "../components/Spinner";
 
 const SellItem = () => {
  const [loading, setLoading] = useState(false);
@@ -166,7 +166,7 @@ const SellItem = () => {
  if(loading) return <Spinner description='uploading...' />
   return (
     <section>
-        <header className="bg-primaryBackground flex justify-center px-4 sticky">
+        <header className="bg-primaryBackground flex justify-center px-4 sticky top-0 z-20">
           <Link to="/" className="mx-0 mb-6">
             <img src={Logo} alt="logo" className="h-16 mt-6" />
           </Link>

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import FormInput from "../FormInput";
-import Sidebar from "../Sidebar";
 import {toast} from 'react-toastify'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,21 +8,11 @@ import {
   updateProfile,
 } from "firebase/auth";
 import {setDoc, doc, serverTimestamp} from 'firebase/firestore'
-import { db } from '../../firebase.config'
-import Button from "../Button";
-import OAuth from '../OAuth';
+import { db } from '../firebase.config'
+import Button from "../components/Button";
+import OAuth from '../components/OAuth';
 
 const Register = () => {
-  const [matches, setMatches] = useState(
-    window.matchMedia("(min-width: 980px)").matches
-  );
-
-  useEffect(() => {
-    window
-      .matchMedia("(min-width: 980px)")
-      .addEventListener("change", (e) => setMatches(e.matches));
-  }, []);
-
   const inputStyle = 'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 rounded-t-md focus:outline-none focus:border-input-border'
 
   const [showPassword, setShowPassword] = useState(false);
@@ -82,8 +70,7 @@ const Register = () => {
   
   return (
     <section className="flex">
-      {matches && <Sidebar />}
-      <main className="flex-[6] bg-home">
+      <main>
         <div>
           <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-12">
             <div className="max-w-md w-full space-y-5">

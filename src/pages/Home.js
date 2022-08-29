@@ -1,10 +1,9 @@
 import {useState, useEffect} from "react";
-import Sidebar from "../Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import SearchInput from "../SearchInput";
-import { CategoryData } from "../CategoryData";
-import Footer from "../Footer";
-import Logo from "../../assets/logo-plain2-1.png";
+import SearchInput from "../components/SearchInput";
+import { CategoryData } from "../components/CategoryData";
+import Footer from "../components/Footer";
+import Logo from "../assets/logo-plain2-1.png";
 import { HiSearch } from "react-icons/hi";
 
 const Home = () => {

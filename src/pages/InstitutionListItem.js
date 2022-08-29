@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { addDoc, collection, serverTimestamp, doc, getDoc } from "firebase/firestore";
-import { db } from "../../firebase.config";
+import { db } from "../firebase.config";
 import { toast } from "react-toastify";
 import { HiSearch } from "react-icons/hi";
 import { AiFillCamera, AiFillHeart, AiOutlineHeart } from "react-icons/ai";
@@ -58,7 +58,7 @@ const InstitutionListItem = ({ listing, id }) => {
 
   return (
     <section className="mx-auto container">
-      <div className="w-full h-full shadow-lg border-2 border-gray-200 border-opacity-60 overflow-hidden rounded-lg">
+      <div className="w-full h-max shadow-lg border-2 border-gray-200 border-opacity-60 overflow-hidden rounded-lg">
         <div className="relative">
           <Link
             to={`/institution/${listing.institution}/${
@@ -90,16 +90,19 @@ const InstitutionListItem = ({ listing, id }) => {
                 </p>
               )}
             </div>
-            <div className="flex border-t border-gray-200 ">
-              <div className="border-b-4 border-b-indigo-800 w-full text-center py-1">
-                <a href={`tel:${listing.mobileNumber}`}>Call</a>
-              </div>
-              <div className="bg-purple-800 w-full text-gray-200 text-center py-1">
-                <a href={`tel:${listing.mobileNumber}`}>Chat</a>
-              </div>
-            </div>
           </Link>
-          <div className="bg-[rgba(0,0,0,0.8)] absolute bottom-40 left-0 text-white w-1/4 rounded-sm text-sm">
+          <div className="flex border-t border-gray-200 ">
+            <div className="border-b-4 border-b-indigo-800 w-full text-center py-1">
+              <a href={`tel:${listing.mobileNumber}`}>Call</a>
+            </div>
+            <div className="bg-purple-800 w-full text-gray-200 text-center py-1">
+              <a href={`tel:${listing.mobileNumber}`}>Chat</a>
+            </div>
+          </div>
+          <div className="text-white absolute m-auto px-1 top-0 bg-opacity-40 text-opacity-80 bg-white rounded-lg">
+            <p>WILLTTA</p>
+          </div>
+          <div className="bg-[rgba(0,0,0,0.8)] absolute top-40 left-0 m-auto text-white w-1/4 rounded-sm text-sm">
             <div className="flex items-center gap-1 justify-center">
               <p>{listing.imgUrls.length}</p> <AiFillCamera />
             </div>

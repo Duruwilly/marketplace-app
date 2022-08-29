@@ -7,7 +7,7 @@ const MyProductListings = ({ listing, id, handleDelete }) => {
 
   return (
     <section className="mx-auto container">
-      <div className="w-full h-full shadow-lg border-2 border-gray-200 border-opacity-60 overflow-hidden rounded-lg">
+      <div className="w-full h-max shadow-lg border-2 border-gray-200 border-opacity-60 overflow-hidden rounded-lg">
         <div className="relative">
           <Link
             to={`/institution/${listing.institution}/${
@@ -39,7 +39,8 @@ const MyProductListings = ({ listing, id, handleDelete }) => {
                 </p>
               )}
             </div>
-            <div className="flex border-t border-gray-200 ">
+          </Link>
+          <div className="flex border-t border-gray-200 ">
               <div className="border-b-4 border-b-indigo-800 w-full text-center py-1">
                 <a href={`tel:${listing.mobileNumber}`}>Call</a>
               </div>
@@ -47,8 +48,10 @@ const MyProductListings = ({ listing, id, handleDelete }) => {
                 <a href={`tel:${listing.mobileNumber}`}>Chat</a>
               </div>
             </div>
-          </Link>
-          <div className="bg-[rgba(0,0,0,0.8)] absolute bottom-40 left-0 text-white w-1/4 rounded-sm text-sm">
+            <div className='text-white absolute m-auto px-1 top-0 right- bg-opacity-40 text-opacity-80 bg-white rounded-lg'>
+             <p>WILLTTA</p>
+            </div>
+          <div className="bg-[rgba(0,0,0,0.8)] absolute top-40 left-0 text-white w-1/4 rounded-sm text-sm">
             <div className="flex items-center gap-1 justify-center">
               <p>{listing.imgUrls.length}</p> <AiFillCamera />
             </div>
