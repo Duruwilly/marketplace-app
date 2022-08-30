@@ -20,8 +20,8 @@ import Spinner from "../components/Spinner";
 const SellItem = () => {
  const [loading, setLoading] = useState(false);
  const [formData, setFormData] = useState({
-   name: "",
-   model: "",
+   nameCase: "",
+   modelCase: "",
    institutionCase: "",
    battery: "",
    condition: "",
@@ -37,9 +37,9 @@ const SellItem = () => {
    images: {},
  });
  const {
-   model,
+   modelCase,
    processor,
-   name,
+   nameCase,
    ram,
    rom,
    os,
@@ -54,6 +54,8 @@ const SellItem = () => {
  } = formData;
 
  let institution = institutionCase.toLowerCase()
+ let model = modelCase.toLowerCase()
+ let name = modelCase.toLowerCase()
 
  const auth = getAuth()
  const navigate = useNavigate()
@@ -133,16 +135,20 @@ const SellItem = () => {
      ...formData,
      imgUrls,
      institution,
+     model,
+     name,
      timestamp: serverTimestamp(),
     };
     
     delete formDataCopy.images;
     delete formDataCopy.institutionCase;
+    delete formDataCopy.nameCase;
+    delete formDataCopy.modelCase;
     const docRef = await addDoc(collection(db, "listings"), formDataCopy);
     setLoading(false);
     toast.success("Listings added successfully");
     navigate(`/institution/${formDataCopy.institution}/${
-    formDataCopy.name || formDataCopy.model
+    formDataCopy.name || formDataCopy.modelCase
     }/${docRef.id}`)
     setLoading(false)
   };
@@ -208,13 +214,13 @@ const SellItem = () => {
 
                     <div className="mt-4 ">
                       <input
-                        id="model"
-                        name="model"
+                        id="modelCase"
+                        name="modelCase"
                         type="text"
                         required
                         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
-                        value={model}
-                        placeholder="e.g iphone x, infinix zero, samsung A20..."
+                        value={modelCase}
+                        placeholder="model e.g iphone x, infinix zero, samsung A20..."
                         onChange={onChange}
                       />
                     </div>
@@ -386,12 +392,12 @@ const SellItem = () => {
 
                     <div className="mt-4 ">
                       <input
-                        id="model"
-                        name="model"
+                        id="modelCase"
+                        name="modelCase"
                         type="text"
                         required
                         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
-                        value={model}
+                        value={modelCase}
                         placeholder="Model e.g Dell inspiton, MacBook, EliteBook..."
                         onChange={onChange}
                       />
@@ -495,7 +501,6 @@ const SellItem = () => {
                         required
                       >
                         <option>Operating System</option>
-                        <option>1GB</option>
                         <option>Window 7</option>
                         <option>Window 8</option>
                         <option>Window 10</option>
@@ -604,12 +609,12 @@ const SellItem = () => {
                   <>
                     <div className="mt-4 ">
                       <input
-                        id="name"
-                        name="name"
+                        id="nameCase"
+                        name="nameCase"
                         type="text"
                         required
                         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
-                        value={name}
+                        value={nameCase}
                         placeholder="Name e.g Table, Chair, Mattress..."
                         onChange={onChange}
                       />
@@ -728,12 +733,12 @@ const SellItem = () => {
                     </div>
                     <div className="mt-4 ">
                       <input
-                        id="name"
-                        name="name"
+                        id="nameCase"
+                        name="nameCase"
                         type="text"
                         required
                         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
-                        value={name}
+                        value={nameCase}
                         placeholder="Name e.g Television, Sound Systems, Speakers..."
                         onChange={onChange}
                       />
@@ -849,12 +854,12 @@ const SellItem = () => {
                     </div>
                     <div className="mt-4 ">
                       <input
-                        id="name"
-                        name="name"
+                        id="nameCase"
+                        name="nameCase"
                         type="text"
                         required
                         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
-                        value={name}
+                        value={nameCase}
                         placeholder="Name of product"
                         onChange={onChange}
                       />

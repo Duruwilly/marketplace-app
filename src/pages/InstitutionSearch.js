@@ -13,6 +13,9 @@ const [loading, setLoading] = useState(true);
 const [product, setProduct] = useState("");
 const [lastFetchedListing, setLastFetchedListing] = useState(null);
 
+ let productCase = product.toLowerCase();
+ const navigate = useNavigate();
+
 const params = useParams();
 
 useEffect(() => {
@@ -76,11 +79,10 @@ const onFetchMoreListings = async () => {
     setLoading(false);
   };
 
-const navigate = useNavigate();
 
 const productSearch = (e) => {
   e.preventDefault();
-  navigate(`/institution/${params.institutionName}/${product}`);
+  navigate(`/institution/${params.institutionName}/${productCase}`);
 };
 
 const onChange = (e) => {
@@ -103,7 +105,7 @@ const onChange = (e) => {
                  value={product}
                  onChange={onChange}
                  placeholder="search product"
-                 className="w-full py-3 pl-10 border-2 block shadow focus:outline-none"
+                 className="w-full py-3 pl-10 border-2 block shadow focus:outline-none text-gray-700 text-lg font-medium"
                />
              </div>
            </form>
@@ -118,16 +120,20 @@ const onChange = (e) => {
            <div className="grid grid-cols-2 md:grid-cols-3 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
              {listings?.map((listing) => (
                <div key={listing.id} className="group relative">
-                 <InstitutionListItem listing={listing.data}
-                  id={listing.id} />
+                 <InstitutionListItem listing={listing.data} id={listing.id} />
                </div>
              ))}
            </div>
-         <br />
-         <br />
-         {lastFetchedListing && (
-          <p className='bg-black font-semibold text-white rounded-full px-1 w-1/4 text-center my-0 mx-auto cursor-pointer' onClick={onFetchMoreListings}>Load More</p>
-         )}
+           <br />
+           <br />
+           {lastFetchedListing && (
+             <p
+               className="bg-black font-semibold text-white rounded-full px-1 w-1/4 text-center my-0 mx-auto cursor-pointer"
+               onClick={onFetchMoreListings}
+             >
+               Load More
+             </p>
+           )}
          </div>
        </div>
      ) : (

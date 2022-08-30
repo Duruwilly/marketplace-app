@@ -17,6 +17,8 @@ import Logo from "./assets/logo-plain2-1.png";
 import Listings from './pages/Listings';
 import Myproduct from './pages/MyProduct';
 import FavouriteList from './pages/FavouriteList';
+import FavouriteSingleList from './pages/FavouriteSingleList';
+import ProductSearchPage from './pages/ProductSearchPage';
 
 function App() {
   const [matches, setMatches] = useState(
@@ -38,29 +40,40 @@ function App() {
   return (
     <>
       <BrowserRouter>
-      <div className='flex'>
-      {matches && <Sidebar />}
-      <div className='flex-[6]'>
-
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path='/institution/:institutionName' element={<InstitutionSearch />} />
-          <Route path='/institution/:institutionName/:productName/:productId' element={<Listings />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/favourites" element={<FavouriteList />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/sell" element={<SellItem />} />
-          <Route path="/my-product" element={<Myproduct />} />
-          <Route path="/profile" element={<PrivateRoute />}>
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-        </Routes>
-      </div>
+        <div className="flex">
+          {matches && <Sidebar />}
+          <div className="flex-[6]">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route
+                path="/institution/:institutionName"
+                element={<InstitutionSearch />}
+              />
+              <Route
+                path="/institution/:institutionName/:productName"
+                element={<ProductSearchPage />}
+              />
+              <Route
+                path="/institution/:institutionName/:productName/:productId"
+                element={<Listings />}
+              />
+              <Route
+                path="/favourites/:institutionName/:productName/:productId"
+                element={<FavouriteSingleList />}
+              />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/favourites" element={<FavouriteList />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/sell" element={<SellItem />} />
+              <Route path="/my-product" element={<Myproduct />} />
+              <Route path="/profile" element={<PrivateRoute />}>
+                <Route path="/profile" element={<Profile />} />
+              </Route>
+            </Routes>
+          </div>
         </div>
-        { !matches &&
-        <Navbar />
-        }
+        {!matches && <Navbar />}
       </BrowserRouter>
       <ToastContainer />
     </>
