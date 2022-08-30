@@ -55,7 +55,7 @@ const SellItem = () => {
 
  let institution = institutionCase.toLowerCase()
  let model = modelCase.toLowerCase()
- let name = modelCase.toLowerCase()
+ let name = nameCase.toLowerCase()
 
  const auth = getAuth()
  const navigate = useNavigate()
