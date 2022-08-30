@@ -16,6 +16,7 @@ import SellItem from './pages/SellItem';
 import Logo from "./assets/logo-plain2-1.png";
 import Listings from './pages/Listings';
 import Myproduct from './pages/MyProduct';
+import FavouriteList from './pages/FavouriteList';
 
 function App() {
   const [matches, setMatches] = useState(
@@ -47,6 +48,7 @@ function App() {
           <Route path='/institution/:institutionName/:productName/:productId' element={<Listings />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/favourites" element={<FavouriteList />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/sell" element={<SellItem />} />
           <Route path="/my-product" element={<Myproduct />} />

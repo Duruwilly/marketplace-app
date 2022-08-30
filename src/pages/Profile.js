@@ -119,7 +119,7 @@ const Profile = () => {
             </p>
             <div className="px-4 mt-2 space-y-6">
               <p>
-                <Link to="/">Favourites</Link>
+                <Link to="/favourites">Favourites</Link>
               </p>
               <p>
                 <Link to="/my-product">view adverts</Link>

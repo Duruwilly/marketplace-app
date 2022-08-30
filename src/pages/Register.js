@@ -61,7 +61,7 @@ const Register = () => {
       formDataCopy.timestamp = serverTimestamp()
 
       await setDoc(doc(db, 'users', user.uid), formDataCopy)
-
+      toast.success('Account successfully registered')
       navigate('/')
     } catch (error) {
       toast.error('something went wrong with registeration')

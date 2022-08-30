@@ -1,38 +1,36 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import SearchInput from "../components/SearchInput";
 import { CategoryData } from "../components/CategoryData";
 import Footer from "../components/Footer";
 import Logo from "../assets/logo-plain2-1.png";
 import { HiSearch } from "react-icons/hi";
 
 const Home = () => {
-  const [institutionName, setInstitutionName] = useState('')
+  const [institutionName, setInstitutionName] = useState("");
 
   const onChange = (e) => {
-    setInstitutionName(e.target.value)
-  }
+    setInstitutionName(e.target.value);
+  };
 
-  let institutionNameCase = institutionName.toLowerCase()
-  
+  let institutionNameCase = institutionName.toLowerCase();
 
   const [matches, setMatches] = useState(
-    window.matchMedia('(min-width: 980px)').matches
-  )
+    window.matchMedia("(min-width: 980px)").matches
+  );
 
   useEffect(() => {
-    window.matchMedia('(min-width: 980px)')
-    .addEventListener('change', e => setMatches( e.matches ))
-  }, [])
+    window
+      .matchMedia("(min-width: 980px)")
+      .addEventListener("change", (e) => setMatches(e.matches));
+  }, []);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const institutionSearch = (e) => {
-    e.preventDefault()
-    navigate(`/institution/${institutionNameCase}`)
-  }
+    e.preventDefault();
+    navigate(`/institution/${institutionNameCase}`);
+  };
 
-  
   return (
     <section>
       <div>
@@ -52,8 +50,8 @@ const Home = () => {
                 type="text"
                 value={institutionName}
                 onChange={onChange}
-                placeholder='search institution'
-                className="w-full py-3 pl-10 border-2 block shadow focus:outline-none"
+                placeholder="search institution"
+                className="w-full py-3 pl-10 border-2 block shadow focus:outline-none text-gray-700 text-lg font-medium"
               />
             </div>
           </form>
@@ -119,7 +117,7 @@ const Home = () => {
                 <p className="text-lg font-bold leading-5">Cash out</p>
               </div>
               <p className="text-lg text-gray-900">
-                Meet with your interested buyer and cashout.
+                Meet with your interested buyer and take your cash.
               </p>
             </div>
           </div>

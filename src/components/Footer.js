@@ -6,7 +6,7 @@ import Logo from "../assets/logo-plain2-1.png";
 
 const Footer = () => {
   return (
-    <div className="bg-black py-8 text-center text-white mt-6">
+    <div className="bg-black py-8 text-center text-white mt-6 mb-">
       <div className="flex max-w-xs mx-auto items-center justify-between">
         <a href="#" rel="noreferer" target="_blank">
           <FaFacebookF />
@@ -21,7 +21,7 @@ const Footer = () => {
           <GrGithub />
         </a>
       </div>
-      <div className="flex max-w-xs mx-auto items-center gap-3 justify-center mt-5">
+      <div className="flex max-w-xs mx-auto items-center gap-3 justify-center mt-5 pb-10 lg:pb-0 xl:pb-0">
         <span>&copy; 2022</span>
         <Link to="/">
           <img src={Logo} alt="logo" className="h-6" />

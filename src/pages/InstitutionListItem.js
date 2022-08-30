@@ -4,14 +4,11 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { addDoc, collection, serverTimestamp, doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
-import { HiSearch } from "react-icons/hi";
-import { AiFillCamera, AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { MdDelete } from "react-icons/md";
+import { AiFillCamera, AiFillHeart } from "react-icons/ai";
 
 
 const InstitutionListItem = ({ listing, id }) => {
-  const [heart, setHeart] = useState(false)
-
+  
   const activeHeart =
     "rounded-full w-5 h-5 p-0 border-0 inline-flex items-center justify-center ml-4 text- bg-primaryBackground  text-xl m-2";
   const normalHeart =
@@ -20,10 +17,11 @@ const InstitutionListItem = ({ listing, id }) => {
  const params = useParams();
 
   const auth = getAuth();
-  const addToFavourite = async (listing) => {
+
+  const addToFavourite = async (favourite) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        addItem();
+        addItem()
         toast.success("Item added to favourite", { toastId: "r34-xAcu9#@(*" });
       } else if (!user) {
         toast.info("Please signup or log in", { toastId: "r34-xAcu9#@(*" });
@@ -32,22 +30,19 @@ const InstitutionListItem = ({ listing, id }) => {
     });
     const addItem = async () => {
       const favouriteItem = {
-        ...listing,
-        wishRef: auth.currentUser.uid,
-        timestamp: serverTimestamp(),
-      };
-      console.log(favouriteItem);
+    ...listing,
+    favouriteRef: auth.currentUser.uid,
+    timestamp: serverTimestamp(),
+  };
+      
       try {
-        await addDoc(collection(db, "favouritelists"), favouriteItem);
+        await addDoc(collection(db, "favourites"), favouriteItem);
       } catch (error) {
         toast.error("An error occured");
       }
     };
   };
 
-  {listing.model.length === 1 ? console.log(true) : console.log(false)}
-
-  console.log(listing.model.length)
   
   const navigate = useNavigate();
 

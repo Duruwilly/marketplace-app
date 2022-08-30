@@ -129,7 +129,6 @@ const SellItem = () => {
      return;
    });
    
-   console.log(formDataCopy)
    const formDataCopy = {
      ...formData,
      imgUrls,
