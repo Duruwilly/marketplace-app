@@ -148,7 +148,7 @@ const SellItem = () => {
     setLoading(false);
     toast.success("Listings added successfully");
     navigate(`/institution/${formDataCopy.institution}/${
-    formDataCopy.name || formDataCopy.modelCase
+    formDataCopy.name || formDataCopy.model
     }/${docRef.id}`)
     setLoading(false)
   };
