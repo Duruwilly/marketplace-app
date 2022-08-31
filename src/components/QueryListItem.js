@@ -1,27 +1,16 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { addDoc, collection, serverTimestamp, doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
 import { AiFillCamera, AiFillHeart } from "react-icons/ai";
 
-
-const ProductListing = ({ listing, id }) => {
-  
-  const activeHeart =
-    "rounded-full w-5 h-5 p-0 border-0 inline-flex items-center justify-center ml-4 text- bg-primaryBackground  text-xl m-2";
-  const normalHeart =
-    "rounded-full w-5 h-5 border-0 inline-flex bg-primaryBackground p-0 items-center justify-center ml-4 text-xl m-2";
-
- const params = useParams();
-
+const InstitutionListItem = ({ listing, id }) => {
   const auth = getAuth();
-
   const addToFavourite = async (favourite) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        addItem()
+        addItem();
         toast.success("Item added to favourite", { toastId: "r34-xAcu9#@(*" });
       } else if (!user) {
         toast.info("Please signup or log in", { toastId: "r34-xAcu9#@(*" });
@@ -30,25 +19,17 @@ const ProductListing = ({ listing, id }) => {
     });
     const addItem = async () => {
       const favouriteItem = {
-    ...listing,
-    favouriteRef: auth.currentUser.uid,
-    timestamp: serverTimestamp(),
-  };
-      
+        ...listing,
+        favouriteRef: auth.currentUser.uid,
+        timestamp: serverTimestamp(),
+      };
+
       try {
         await addDoc(collection(db, "favourites"), favouriteItem);
       } catch (error) {
         toast.error("An error occured");
       }
     };
-  };
-
-  
-  const navigate = useNavigate();
-
-  const itemSearch = (e) => {
-    e.preventDefault();
-    navigate("/institution/id");
   };
 
   return (
@@ -68,12 +49,14 @@ const ProductListing = ({ listing, id }) => {
               />
             </div>
             <div className="px-3 my-1">
-              <h2 className="mt-4 text-black font-semibold">{listing?.name}</h2>
-              <h2 className="mt-4 text-black font-semibold">
+              <h2 className="mt-4 text-black font-semibold capitalize">
+                {listing?.name}
+              </h2>
+              <h2 className="mt-4 text-black font-semibold capitalize">
                 {listing?.model}
               </h2>
               <p className="text-sm text-gray-500 my-1">{listing?.condition}</p>
-              <p className="text-sm text-gray-500 my-1">
+              <p className="text-sm text-gray-500 my-1 capitalize">
                 {listing.institution}
               </p>
               {listing.price !== "" && (
@@ -116,4 +99,4 @@ const ProductListing = ({ listing, id }) => {
   );
 };
 
-export default ProductListing;
+export default InstitutionListItem;

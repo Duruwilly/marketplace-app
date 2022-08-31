@@ -11,10 +11,14 @@ import {setDoc, doc, serverTimestamp} from 'firebase/firestore'
 import { db } from '../firebase.config'
 import Button from "../components/Button";
 import OAuth from '../components/OAuth';
+import Logo from "../assets/logo-plain2-1.png";
 
 const Register = () => {
   const inputStyle = 'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 rounded-t-md focus:outline-none focus:border-input-border'
 
+  const [matches, setMatches] = useState(
+    window.matchMedia("(min-width: 980px)").matches
+  );
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -27,12 +31,22 @@ const Register = () => {
 
   const navigate = useNavigate();
 
+  const passwordToggle = () => {
+    setShowPassword((prevState) => !prevState);
+  }
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
   };
+
+  useEffect(() => {
+    window
+      .matchMedia("(min-width: 980px)")
+      .addEventListener("change", (e) => setMatches(e.matches));
+  }, []);
 
   const submitForm = async (e) => {
     e.preventDefault()
@@ -69,79 +83,93 @@ const Register = () => {
   }
   
   return (
-    <section className="flex">
-      <main>
-        <div>
-          <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-12">
-            <div className="max-w-md w-full space-y-5">
-              <h2 className="text-center text-3xl font-extrabold text-gray-900">
-                Create your account
-              </h2>
-              <form className="space-y-4" onSubmit={submitForm}>
+    <section>
+      {!matches && (
+        <header className="bg-primaryBackground flex justify-center px-4 sticky top-0 z-10">
+          <Link to="/" className="mx-0 mb-6">
+            <img src={Logo} alt="logo" className="h-16 mt-6" />
+          </Link>
+        </header>
+      )}
+      <main className="flex items-center justify-center">
+        <div className="max-w-2xl w-full pb-20 px-4 sm:px-6 lg:px-8 mt-10">
+          <div className="max-w-2xl w-full space-y-5">
+            <h2 className="text-center text-3xl font-extrabold text-gray-900">
+              Create your account
+            </h2>
+            <form className="space-y-4" onSubmit={submitForm}>
+              <input
+                type="name"
+                placeholder="Full Name"
+                id="name"
+                name="name"
+                value={name}
+                className={inputStyle}
+                onChange={onChange}
+              />
+              <input
+                type="email"
+                placeholder="Email address"
+                autoComplete="email"
+                id="email"
+                name="email"
+                className={inputStyle}
+                value={email}
+                onChange={onChange}
+              />
+              <div className="relative">
                 <input
-                  type="name"
-                  placeholder="Full Name"
-                  id="name"
-                  name="name"
-                  value={name}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  autoComplete="current-password"
+                  id="password"
+                  name="password"
+                  value={password}
                   className={inputStyle}
                   onChange={onChange}
                 />
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  autoComplete="email"
-                  id="email"
-                  name="email"
-                  className={inputStyle}
-                  value={email}
-                  onChange={onChange}
-                />
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Password"
-                    autoComplete="current-password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    className={inputStyle}
-                    onChange={onChange}
-                  />
-
+                {!showPassword && (
                   <FaEye
-                    className="absolute top-3 right-1 cursor-pointer"
+                    className="absolute top-3 right-1 mr-2 cursor-pointer"
                     size={15}
                     color="#1e1e1e"
-                    onClick={() => setShowPassword((prevState) => !prevState)}
+                    onClick={passwordToggle}
                   />
-                </div>
-                <input
-                  type="tel"
-                  placeholder="Mobile Number"
-                  id="mobileNumber"
-                  name="mobileNumber"
-                  value={mobileNumber}
-                  className={inputStyle}
-                  onChange={onChange}
-                />
-                <Button text="Sign up" />
-              </form>
+                )}
+                {showPassword && (
+                  <FaEyeSlash
+                    className="absolute top-3 right-1 mr-2 cursor-pointer"
+                    size={15}
+                    color="#1e1e1e"
+                    onClick={passwordToggle}
+                  />
+                )}
+              </div>
+              <input
+                type="tel"
+                placeholder="Mobile Number"
+                id="mobileNumber"
+                name="mobileNumber"
+                value={mobileNumber}
+                className={inputStyle}
+                onChange={onChange}
+              />
+              <Button text="Sign up" />
+            </form>
 
-              <OAuth />
-              <p className="text-center">
-                Already have an account?{" "}
-                <Link
-                  to="/login"
-                  className="font-medium text-indigo-700 underline"
-                >
-                  Sign in
-                </Link>
-              </p>
-              <p className="text-center text-xs">
-                By continuing you agree to the Policy and Rules of Willtta
-              </p>
-            </div>
+            <OAuth />
+            <p className="text-center">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="font-medium text-indigo-700 underline"
+              >
+                Sign in
+              </Link>
+            </p>
+            <p className="text-center text-xs">
+              By continuing you agree to the Policy and Rules of Willtta
+            </p>
           </div>
         </div>
       </main>

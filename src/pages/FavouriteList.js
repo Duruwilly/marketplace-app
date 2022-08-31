@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   collection,
@@ -15,6 +15,7 @@ import { db } from "../firebase.config";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 import FavouriteItem from "../components/FavouriteItem";
+import Logo from "../assets/logo-plain2-1.png";
 function Wishlist() {
   const [favouriteList, setFavouriteList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,10 +72,11 @@ function Wishlist() {
   const deleteFavourite = async (favouriteId) => {
     try {
       await deleteDoc(doc(db, "favourites", favouriteId));
-      const updatedFavouriteList = 
-        favouriteList.filter((favourite) => favourite.id !== favouriteId);
+      const updatedFavouriteList = favouriteList.filter(
+        (favourite) => favourite.id !== favouriteId
+      );
       setFavouriteList(updatedFavouriteList);
-      toast.success('deleted successfully')
+      toast.success("deleted successfully");
     } catch (error) {
       console.log(error);
       toast.error("error", { toastId: "#@#433szxdz#@23" });
@@ -84,22 +86,31 @@ function Wishlist() {
   if (loading) return <Spinner description="Loading..." />;
 
   return (
-    <div className="mt-16 pb-24">
+    <div className="">
+      <header className="bg-primaryBackground flex justify-center px-4 sticky top-0 z-20">
+        <Link to="/" className="mx-0 mb-6">
+          <img src={Logo} alt="logo" className="h-16 mt-6" />
+        </Link>
+      </header>
       {favouriteList?.length !== 0 ? (
-        <section className="text-gray-600 body-font">
-         <div className="px-4 mx-auto">
-          <h1 className="text-center capitalize sm:text-4xl text-3xl font-medium mb-2 text-gray-900">your favourite</h1>
-         <ul className="overflow-x-auto">
-                  {favouriteList?.map((listing) => (
-                   <FavouriteItem
-                   listing={listing.data}
-                   id={listing.id}
-                   key={listing.id}
-                   handleDelete={deleteFavourite}
-                   />
-                   ))}
-                      </ul>
-                   </div>
+        <section className="mt-6 pb-24">
+          <main className="text-gray-600 body-font">
+            <div className="px-4 mx-auto">
+              <h1 className="text-center capitalize sm:text-4xl text-3xl font-medium mb-2 text-gray-900">
+                your favourite
+              </h1>
+              <ul className="overflow-x-auto">
+                {favouriteList?.map((listing) => (
+                  <FavouriteItem
+                    listing={listing.data}
+                    id={listing.id}
+                    key={listing.id}
+                    handleDelete={deleteFavourite}
+                  />
+                ))}
+              </ul>
+            </div>
+          </main>
         </section>
       ) : (
         <div className="flex justify-center align-center mt-24">

@@ -1,8 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import { FaArrowCircleRight } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo-plain2-1.png";
-import { Categories } from "../components/Categories";
+import Button from "../components/Button";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   getStorage,
@@ -14,132 +13,132 @@ import {
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
-import {v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from "uuid";
 import Spinner from "../components/Spinner";
 
 const SellItem = () => {
- const [loading, setLoading] = useState(false);
- const [formData, setFormData] = useState({
-   nameCase: "",
-   modelCase: "",
-   institutionCase: "",
-   battery: "",
-   condition: "",
-   price: "",
-   ram: "",
-   processor: "",
-   os: "",
-   brand: "",
-   rom: "",
-   description: "",
-   mobileNumber: "",
-   categories: "",
-   images: {},
- });
- const {
-   modelCase,
-   processor,
-   nameCase,
-   ram,
-   rom,
-   os,
-   brand,
-   price,
-   condition,
-   institutionCase,
-   description,
-   mobileNumber,
-   categories,
-   images,
- } = formData;
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    nameCase: "",
+    modelCase: "",
+    institutionCase: "",
+    battery: "",
+    condition: "",
+    price: "",
+    ram: "",
+    processor: "",
+    os: "",
+    brand: "",
+    rom: "",
+    description: "",
+    mobileNumber: "",
+    categories: "",
+    images: {},
+  });
+  const {
+    modelCase,
+    processor,
+    nameCase,
+    ram,
+    rom,
+    os,
+    brand,
+    price,
+    condition,
+    institutionCase,
+    description,
+    mobileNumber,
+    categories,
+    images,
+  } = formData;
 
- let institution = institutionCase.toLowerCase()
- let model = modelCase.toLowerCase()
- let name = nameCase.toLowerCase()
+  let institution = institutionCase.toLowerCase();
+  let model = modelCase.toLowerCase();
+  let name = nameCase.toLowerCase();
 
- const auth = getAuth()
- const navigate = useNavigate()
- const isMounted = useRef(true)
+  const auth = getAuth();
+  const navigate = useNavigate();
+  const isMounted = useRef(true);
 
- useEffect(() => {
-   if (isMounted) {
-     onAuthStateChanged(auth, (user) => {
-       if (user) {
-         setFormData({ ...formData, userRef: user.uid });
-       } else {
-         navigate("/login");
-       }
-     });
-   }
+  useEffect(() => {
+    if (isMounted) {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          setFormData({ ...formData, userRef: user.uid });
+        } else {
+          navigate("/login");
+        }
+      });
+    }
 
-   return () => {
-     isMounted.current = false;
-   };
-   // eslint-disable-next-line react-hooks/exhaustive-deps
- }, [isMounted])
-
- const submitForm = async (e) => {
-   e.preventDefault();
-   setLoading(true);
-   if (images.length > 5) {
-     setLoading(false);
-     toast.error("Images should not exceed 5", { toastId: "gcyuch45ub657" });
-     return;
-   }
-
-   const storeImage = async (image) => {
-     return new Promise((resolve, reject) => {
-       const storage = getStorage();
-       const fileName = `${auth.currentUser.uid}-${image.name}-${uuidv4()}`;
-
-       const storageRef = ref(storage, "images/" + fileName);
-
-       const uploadTask = uploadBytesResumable(storageRef, image);
-
-       uploadTask.on(
-         "state_changed",
-         (snapshot) => {
-           const progress =
-             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-             console.log('Upload is ' + progress + '% done');
-           switch (snapshot.state) {
-             case "paused":
-               break;
-             case "running":
-               break;
-             default:
-               break;
-           }
-         },
-         (error) => {
-           reject(error);
-         },
-         () => {
-           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-             resolve(downloadURL);
-           });
-         }
-       );
-     });
-   };
-
-   const imgUrls = await Promise.all(
-     [...images].map((image) => storeImage(image))
-   ).catch(() => {
-     setLoading(false);
-     toast.error("Images not uploaded");
-     return;
-   });
-   
-   const formDataCopy = {
-     ...formData,
-     imgUrls,
-     institution,
-     model,
-     name,
-     timestamp: serverTimestamp(),
+    return () => {
+      isMounted.current = false;
     };
-    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMounted]);
+
+  const submitForm = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    if (images.length > 5) {
+      setLoading(false);
+      toast.error("Images should not exceed 5", { toastId: "gcyuch45ub657" });
+      return;
+    }
+
+    const storeImage = async (image) => {
+      return new Promise((resolve, reject) => {
+        const storage = getStorage();
+        const fileName = `${auth.currentUser.uid}-${image.name}-${uuidv4()}`;
+
+        const storageRef = ref(storage, "images/" + fileName);
+
+        const uploadTask = uploadBytesResumable(storageRef, image);
+
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+              case "paused":
+                break;
+              case "running":
+                break;
+              default:
+                break;
+            }
+          },
+          (error) => {
+            reject(error);
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              resolve(downloadURL);
+            });
+          }
+        );
+      });
+    };
+
+    const imgUrls = await Promise.all(
+      [...images].map((image) => storeImage(image))
+    ).catch(() => {
+      setLoading(false);
+      toast.error("Images not uploaded");
+      return;
+    });
+
+    const formDataCopy = {
+      ...formData,
+      imgUrls,
+      institution,
+      model,
+      name,
+      timestamp: serverTimestamp(),
+    };
+
     delete formDataCopy.images;
     delete formDataCopy.institutionCase;
     delete formDataCopy.nameCase;
@@ -147,28 +146,30 @@ const SellItem = () => {
     const docRef = await addDoc(collection(db, "listings"), formDataCopy);
     setLoading(false);
     toast.success("Listings added successfully");
-    navigate(`/institution/${formDataCopy.institution}/${
-    formDataCopy.name || formDataCopy.model
-    }/${docRef.id}`)
-    setLoading(false)
+    navigate(
+      `/institution/${formDataCopy.institution}/${
+        formDataCopy.name || formDataCopy.model
+      }/${docRef.id}`
+    );
+    setLoading(false);
   };
 
- const onChange = (e) => {
-   if (e.target.files) {
-     setFormData((prevState) => ({
-       ...prevState,
-       images: e.target.files,
-     }));
-   }
-   if (!e.target.files) {
-     setFormData((prevState) => ({
-       ...prevState,
-       [e.target.id]: e.target.value,
-     }));
-   }
- };
+  const onChange = (e) => {
+    if (e.target.files) {
+      setFormData((prevState) => ({
+        ...prevState,
+        images: e.target.files,
+      }));
+    }
+    if (!e.target.files) {
+      setFormData((prevState) => ({
+        ...prevState,
+        [e.target.id]: e.target.value,
+      }));
+    }
+  };
 
- if(loading) return <Spinner description='uploading...' />
+  if (loading) return <Spinner description="uploading..." />;
   return (
     <section>
         <header className="bg-primaryBackground flex justify-center px-4 sticky top-0 z-20">
@@ -176,15 +177,15 @@ const SellItem = () => {
             <img src={Logo} alt="logo" className="h-16 mt-6" />
           </Link>
         </header>
-      <div className="min-h-screen flex items-center justify-center py-16 mb-12 px-4 overflow-x-hidden">
-        <div className="max-w-md w-full overflow-x-hidden">
+      <div className="flex items-center justify-center mt-4 pb-16 mb-12 px-4 overflow-x-hidden">
+        <div className="max-w-3xl w-full overflow-x-hidden">
           <form onSubmit={submitForm}>
             <div className="rounded-md shadow-sm -space-y-px">
               <div className="relative">
                 <select
                   id="categories"
                   name="categories"
-                  className="caret-emerald-500 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  className="purple-900 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-900 focus:border-purple-900 focus:z-10 sm:text-sm"
                   value={categories}
                   onChange={onChange}
                   required
@@ -205,9 +206,9 @@ const SellItem = () => {
                         name="brand"
                         type="text"
                         required
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={brand}
-                        placeholder="e.g infinix, apple, samsung..."
+                        placeholder="brand e.g infinix, apple, samsung..."
                         onChange={onChange}
                       />
                     </div>
@@ -218,7 +219,7 @@ const SellItem = () => {
                         name="modelCase"
                         type="text"
                         required
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={modelCase}
                         placeholder="model e.g iphone x, infinix zero, samsung A20..."
                         onChange={onChange}
@@ -226,13 +227,10 @@ const SellItem = () => {
                     </div>
 
                     <div className="mt-4 ">
-                      <label htmlFor="" className="sr-only">
-                        condition
-                      </label>
                       <select
                         id="condition"
                         name="condition"
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={condition}
                         onChange={onChange}
                         required
@@ -247,7 +245,7 @@ const SellItem = () => {
                       <select
                         id="ram"
                         name="ram"
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={ram}
                         onChange={onChange}
                         required
@@ -262,33 +260,32 @@ const SellItem = () => {
                         <option>8GB</option>
                         <option>12GB</option>
                       </select>
-                      <select
-                        id="rom"
-                        name="rom"
-                        className="appearance-none caret-emerald-500 rounded-none relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        value={rom}
-                        onChange={onChange}
-                        required
-                      >
-                        <option>Internal Storage</option>
-                        <option>32GB</option>
-                        <option>64GB</option>
-                        <option>128GB</option>
-                        <option>256GB</option>
-                        <option>512GB</option>
-                      </select>
+                      <div className="mt-4">
+                        <select
+                          id="rom"
+                          name="rom"
+                          className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
+                          value={rom}
+                          onChange={onChange}
+                          required
+                        >
+                          <option>Internal Storage</option>
+                          <option>32GB</option>
+                          <option>64GB</option>
+                          <option>128GB</option>
+                          <option>256GB</option>
+                          <option>512GB</option>
+                        </select>
+                      </div>
                     </div>
 
                     <div className="mt-4">
-                      <label htmlFor="email-address" className="sr-only">
-                        Institution
-                      </label>
                       <input
                         name="institutionCase"
                         id="institutionCase"
                         type="text"
                         required
-                        className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={institutionCase}
                         placeholder="Institution"
                         onChange={onChange}
@@ -303,7 +300,7 @@ const SellItem = () => {
                         maxLength="11"
                         minLength="11"
                         required
-                        className="appearance-none rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={mobileNumber}
                         placeholder="Mobile Number"
                         onChange={onChange}
@@ -319,20 +316,17 @@ const SellItem = () => {
                         type="number"
                         min="1"
                         required
-                        className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={price}
-                        placeholder="Phone price"
+                        placeholder="Price"
                         onChange={onChange}
                       />
                     </div>
                     <div className="mt-4">
-                      <label htmlFor="email-address" className="sr-only">
-                        Describe Your Phone
-                      </label>
                       <textarea
                         id="description"
                         name="description"
-                        className="appearance-none rounded-none caret-emerald-500 relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none caret-purple-700 relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
                         value={description}
                         onChange={onChange}
                         placeholder="Description"
@@ -343,34 +337,23 @@ const SellItem = () => {
                         htmlFor="email-address"
                         className="block text-sm font-medium text-slate-700"
                       >
-                        Add photos. (maximum of 4) First image is the title
+                        Add photos. (maximum of 5) First image is the title
                         picture
                       </label>
                       <input
-                        className="appearance-none rounded mt-2 relative block w-full border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded mt-2 relative block w-full bg-primaryBackground placeholder-white text-white focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
                         type="file"
                         id="images"
                         placeholder="Upload images"
                         onChange={onChange}
-                        max="4"
+                        max="5"
                         accept=".jpg,.png,.jpeg"
                         multiple
                         required
                       />
                     </div>
-                    <div>
-                      <button
-                        type="submit"
-                        className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Post
-                        <span className="absolute right-4 inset-y-0 flex items-center pl-3">
-                          <FaArrowCircleRight
-                            className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-                            color="white"
-                          />
-                        </span>
-                      </button>
+                    <div className="mt-4">
+                      <Button text="Post" />
                     </div>
                   </>
                 )}
@@ -383,7 +366,7 @@ const SellItem = () => {
                         name="brand"
                         type="text"
                         required
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={brand}
                         placeholder="brand e.g, Apple, Asus, HP..."
                         onChange={onChange}
@@ -396,7 +379,7 @@ const SellItem = () => {
                         name="modelCase"
                         type="text"
                         required
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={modelCase}
                         placeholder="Model e.g Dell inspiton, MacBook, EliteBook..."
                         onChange={onChange}
@@ -407,7 +390,7 @@ const SellItem = () => {
                       <select
                         id="processor"
                         name="processor"
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={processor}
                         onChange={onChange}
                         required
@@ -429,7 +412,7 @@ const SellItem = () => {
                       <select
                         id="condition"
                         name="condition"
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={condition}
                         onChange={onChange}
                         required
@@ -444,7 +427,7 @@ const SellItem = () => {
                       <select
                         id="ram"
                         name="ram"
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={ram}
                         onChange={onChange}
                         required
@@ -464,10 +447,12 @@ const SellItem = () => {
                         <option>64GB</option>
                         <option>256GB</option>
                       </select>
+                    </div>
+                    <div className="mt-4">
                       <select
                         id="rom"
                         name="rom"
-                        className="appearance-none caret-emerald-500 rounded-none relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={rom}
                         onChange={onChange}
                         required
@@ -495,7 +480,7 @@ const SellItem = () => {
                       <select
                         id="os"
                         name="os"
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={os}
                         onChange={onChange}
                         required
@@ -513,15 +498,12 @@ const SellItem = () => {
                     </div>
 
                     <div className="mt-4">
-                      <label htmlFor="email-address" className="sr-only">
-                        Institution
-                      </label>
                       <input
                         name="institutionCase"
                         id="institutionCase"
                         type="text"
                         required
-                        className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={institutionCase}
                         placeholder="Institution"
                         onChange={onChange}
@@ -536,7 +518,7 @@ const SellItem = () => {
                         maxLength="11"
                         minLength="11"
                         required
-                        className="appearance-none rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={mobileNumber}
                         placeholder="Mobile Number"
                         onChange={onChange}
@@ -551,20 +533,17 @@ const SellItem = () => {
                         id="price"
                         type="number"
                         required
-                        className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={price}
                         placeholder="Price"
                         onChange={onChange}
                       />
                     </div>
                     <div className="mt-4">
-                      <label htmlFor="email-address" className="sr-only">
-                        Describe Your Phone
-                      </label>
                       <textarea
                         id="description"
                         name="description"
-                        className="appearance-none rounded-none caret-emerald-500 relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none caret-purple-900 relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-purple-900 focus:border-purple-900 focus:z-10 sm:text-sm"
                         value={description}
                         onChange={onChange}
                         placeholder="Description"
@@ -575,33 +554,23 @@ const SellItem = () => {
                         htmlFor="email-address"
                         className="block text-sm font-medium text-slate-700"
                       >
-                        Upload images(maximum of 4)
+                        Add photos. (maximum of 5) First image is the title
+                        picture
                       </label>
                       <input
-                        className="appearance-none rounded mt-2 relative block w-full border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded mt-2 relative block w-full bg-primaryBackground placeholder-white text-white rounded-t-md focus:outline-none focus:ring-purple-900 focus:border-purple-900 focus:z-10 sm:text-sm"
                         type="file"
                         id="images"
                         placeholder="Upload images"
                         onChange={onChange}
-                        max="4"
+                        max="5"
                         accept=".jpg,.png,.jpeg"
                         multiple
                         required
                       />
                     </div>
-                    <div>
-                      <button
-                        type="submit"
-                        className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Sell it
-                        <span className="absolute right-4 inset-y-0 flex items-center pl-3">
-                          <FaArrowCircleRight
-                            className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-                            color="white"
-                          />
-                        </span>
-                      </button>
+                    <div className="mt-4">
+                      <Button text="Post" />
                     </div>
                   </>
                 )}
@@ -613,7 +582,7 @@ const SellItem = () => {
                         name="nameCase"
                         type="text"
                         required
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={nameCase}
                         placeholder="Name e.g Table, Chair, Mattress..."
                         onChange={onChange}
@@ -624,7 +593,7 @@ const SellItem = () => {
                       <select
                         id="condition"
                         name="condition"
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={condition}
                         onChange={onChange}
                         required
@@ -636,15 +605,12 @@ const SellItem = () => {
                     </div>
 
                     <div className="mt-4">
-                      <label htmlFor="email-address" className="sr-only">
-                        Institution
-                      </label>
                       <input
                         name="institutionCase"
                         id="institutionCase"
                         type="text"
                         required
-                        className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={institutionCase}
                         placeholder="Institution"
                         onChange={onChange}
@@ -659,7 +625,7 @@ const SellItem = () => {
                         maxLength="11"
                         minLength="11"
                         required
-                        className="appearance-none rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={mobileNumber}
                         placeholder="Mobile Number"
                         onChange={onChange}
@@ -671,7 +637,7 @@ const SellItem = () => {
                         id="price"
                         type="number"
                         required
-                        className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={price}
                         placeholder="Price"
                         onChange={onChange}
@@ -681,7 +647,7 @@ const SellItem = () => {
                       <textarea
                         id="description"
                         name="description"
-                        className="appearance-none rounded-none caret-emerald-500 relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none caret-purple-900 relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-purple-900 focus:border-purple-500 focus:z-10 sm:text-sm"
                         value={description}
                         onChange={onChange}
                         placeholder="Description"
@@ -692,27 +658,23 @@ const SellItem = () => {
                         htmlFor="email-address"
                         className="block text-sm font-medium text-slate-700"
                       >
-                        Upload images(maximum of 4)
+                        Add photos. (maximum of 5) First image is the title
+                        picture
                       </label>
                       <input
-                        className="appearance-none rounded mt-2 relative block w-full border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded mt-2 relative block w-full bg-primaryBackground text-white rounded-t-md focus:outline-none focus:ring-purple-900 focus:border-purple-900 focus:z-10 sm:text-sm"
                         type="file"
                         id="images"
                         placeholder="Upload images"
                         onChange={onChange}
-                        max="4"
+                        max="5"
                         accept=".jpg,.png,.jpeg"
                         multiple
                         required
                       />
                     </div>
-                    <div>
-                      <button
-                        type="submit"
-                        className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Post
-                      </button>
+                    <div className="mt-4">
+                      <Button text="Post" />
                     </div>
                   </>
                 )}
@@ -725,7 +687,7 @@ const SellItem = () => {
                         name="brand"
                         type="text"
                         required
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={brand}
                         placeholder="brand e.g JBL, LG, Sony..."
                         onChange={onChange}
@@ -737,7 +699,7 @@ const SellItem = () => {
                         name="nameCase"
                         type="text"
                         required
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={nameCase}
                         placeholder="Name e.g Television, Sound Systems, Speakers..."
                         onChange={onChange}
@@ -748,7 +710,7 @@ const SellItem = () => {
                       <select
                         id="condition"
                         name="condition"
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={condition}
                         onChange={onChange}
                         required
@@ -765,7 +727,7 @@ const SellItem = () => {
                         id="institutionCase"
                         type="text"
                         required
-                        className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={institutionCase}
                         placeholder="Institution"
                         onChange={onChange}
@@ -780,7 +742,7 @@ const SellItem = () => {
                         maxLength="11"
                         minLength="11"
                         required
-                        className="appearance-none rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={mobileNumber}
                         placeholder="Mobile Number"
                         onChange={onChange}
@@ -792,7 +754,7 @@ const SellItem = () => {
                         id="price"
                         type="number"
                         required
-                        className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={price}
                         placeholder="Price"
                         onChange={onChange}
@@ -802,7 +764,7 @@ const SellItem = () => {
                       <textarea
                         id="description"
                         name="description"
-                        className="appearance-none rounded-none caret-emerald-500 relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none caret-purple-900 relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-purple-900 focus:border-purple-900 focus:z-10 sm:text-sm"
                         value={description}
                         onChange={onChange}
                         placeholder="Description"
@@ -813,27 +775,23 @@ const SellItem = () => {
                         htmlFor="email-address"
                         className="block text-sm font-medium text-slate-700"
                       >
-                        Upload images(maximum of 4)
+                        Add photos. (maximum of 5) First image is the title
+                        picture
                       </label>
                       <input
-                        className="appearance-none rounded mt-2 relative block w-full border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded mt-2 relative block w-full bg-primaryBackground text-white rounded-t-md focus:outline-none focus:ring-purple-900 focus:border-purple-900 focus:z-10 sm:text-sm"
                         type="file"
                         id="images"
                         placeholder="Upload images"
                         onChange={onChange}
-                        max="4"
+                        max="5"
                         accept=".jpg,.png,.jpeg"
                         multiple
                         required
                       />
                     </div>
-                    <div>
-                      <button
-                        type="submit"
-                        className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Post
-                      </button>
+                    <div className="mt-4">
+                      <Button text="Post" />
                     </div>
                   </>
                 )}
@@ -846,9 +804,9 @@ const SellItem = () => {
                         name="brand"
                         type="text"
                         required
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={brand}
-                        placeholder="brand"
+                        placeholder="Brand"
                         onChange={onChange}
                       />
                     </div>
@@ -858,7 +816,7 @@ const SellItem = () => {
                         name="nameCase"
                         type="text"
                         required
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-emerald-500"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={nameCase}
                         placeholder="Name of product"
                         onChange={onChange}
@@ -869,7 +827,7 @@ const SellItem = () => {
                       <select
                         id="condition"
                         name="condition"
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={condition}
                         onChange={onChange}
                         required
@@ -886,7 +844,7 @@ const SellItem = () => {
                         id="institutionCase"
                         type="text"
                         required
-                        className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={institutionCase}
                         placeholder="Institution"
                         onChange={onChange}
@@ -901,7 +859,7 @@ const SellItem = () => {
                         maxLength="11"
                         minLength="11"
                         required
-                        className="appearance-none rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={mobileNumber}
                         placeholder="Mobile Number"
                         onChange={onChange}
@@ -913,7 +871,7 @@ const SellItem = () => {
                         id="price"
                         type="number"
                         required
-                        className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={price}
                         placeholder="Price"
                         onChange={onChange}
@@ -923,7 +881,7 @@ const SellItem = () => {
                       <textarea
                         id="description"
                         name="description"
-                        className="appearance-none rounded-none caret-emerald-500 relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none caret-purple-900 relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-purple-900 focus:border-purple-900 focus:z-10 sm:text-sm"
                         value={description}
                         onChange={onChange}
                         placeholder="Description"
@@ -934,27 +892,23 @@ const SellItem = () => {
                         htmlFor="email-address"
                         className="block text-sm font-medium text-slate-700"
                       >
-                        Upload images(maximum of 4)
+                        Add photos. (maximum of 5) First image is the title
+                        picture
                       </label>
                       <input
-                        className="appearance-none rounded mt-2 relative block w-full border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded mt-2 relative block w-full bg-primaryBackground text-white rounded-t-md focus:outline-none focus:ring-purple-900 focus:border-purple-900 focus:z-10 sm:text-sm"
                         type="file"
                         id="images"
                         placeholder="Upload images"
                         onChange={onChange}
-                        max="4"
+                        max="5"
                         accept=".jpg,.png,.jpeg"
                         multiple
                         required
                       />
                     </div>
-                    <div>
-                      <button
-                        type="submit"
-                        className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Post
-                      </button>
+                    <div className="mt-4">
+                      <Button text="Post" />
                     </div>
                   </>
                 )}
@@ -965,7 +919,7 @@ const SellItem = () => {
                       <select
                         id="condition"
                         name="condition"
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 mt-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={condition}
                         onChange={onChange}
                         required
@@ -983,7 +937,7 @@ const SellItem = () => {
                         id="institutionCase"
                         type="text"
                         required
-                        className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={institutionCase}
                         placeholder="Institution"
                         onChange={onChange}
@@ -999,7 +953,7 @@ const SellItem = () => {
                         maxLength="11"
                         minLength="11"
                         required
-                        className="appearance-none rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={mobileNumber}
                         placeholder="Mobile Number"
                         onChange={onChange}
@@ -1012,7 +966,7 @@ const SellItem = () => {
                         id="price"
                         type="number"
                         required
-                        className="appearance-none caret-emerald-500 rounded-none mt-2 relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
                         value={price}
                         placeholder="Price"
                         onChange={onChange}
@@ -1035,28 +989,24 @@ const SellItem = () => {
                         htmlFor="email-address"
                         className="block text-sm font-medium text-slate-700"
                       >
-                        Upload images(maximum of 4)
+                        Add photos. (maximum of 5) First image is the title
+                        picture
                       </label>
                       <input
-                        className="appearance-none rounded mt-2 relative block w-full border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        className="appearance-none rounded mt-2 relative block w-full bg-primaryBackground rounded-t-md focus:outline-none focus:ring-purple-900 focus:border-purple-900 focus:z-10 sm:text-sm"
                         type="file"
                         id="images"
                         placeholder="Upload images"
                         onChange={onChange}
-                        max="4"
+                        max="5"
                         accept=".jpg,.png,.jpeg"
                         multiple
                         required
                         disabled={categories === ""}
                       />
                     </div>
-                    <div>
-                      <button
-                        type="submit"
-                        className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Post
-                      </button>
+                    <div className="mt-4">
+                      <Button text="Post" />
                     </div>
                   </>
                 )}
@@ -1067,7 +1017,6 @@ const SellItem = () => {
       </div>
     </section>
   );
-}
+};
 
-
-export default SellItem
+export default SellItem;

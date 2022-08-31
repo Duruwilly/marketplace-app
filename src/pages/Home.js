@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CategoryData } from "../components/CategoryData";
+import { CategoryData } from "../components/NavbarMenu";
 import Footer from "../components/Footer";
 import Logo from "../assets/logo-plain2-1.png";
 import { HiSearch } from "react-icons/hi";
 
 const Home = () => {
-  const [institutionName, setInstitutionName] = useState("");
+  const [queryName, setqueryName] = useState("");
 
   const onChange = (e) => {
-    setInstitutionName(e.target.value);
+    setqueryName(e.target.value);
   };
 
-  let institutionNameCase = institutionName.toLowerCase();
+  let queryNameCase = queryName.toLowerCase();
 
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 980px)").matches
@@ -26,9 +26,9 @@ const Home = () => {
 
   const navigate = useNavigate();
 
-  const institutionSearch = (e) => {
+  const querySearch = (e) => {
     e.preventDefault();
-    navigate(`/institution/${institutionNameCase}`);
+    navigate(`/institution/${queryNameCase}`, {state:{ queryName}});
   };
 
   return (
@@ -42,16 +42,16 @@ const Home = () => {
           </header>
         )}
         <div className="px-4 bg-primaryBackground h-20 sticky top-0 z-20 w-full pt-2">
-          <form onSubmit={institutionSearch}>
+          <form onSubmit={querySearch}>
             <div className="flex gap-5 w-full items-center shadow-2xl text-xl">
               <HiSearch className="absolute ml-3 text-gray-400" />
               <input
                 required
                 type="text"
-                value={institutionName}
+                value={queryName}
                 onChange={onChange}
-                placeholder="search institution"
-                className="w-full py-3 pl-10 border-2 block shadow focus:outline-none text-gray-700 text-lg font-medium"
+                placeholder="type institution or product name"
+                className="w-full py-3 pl-10 border-2 block shadow focus:outline-none text-gray-700 text-lg font-medium caret-purple-900"
               />
             </div>
           </form>

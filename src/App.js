@@ -2,23 +2,22 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
-import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
-import PrivateRoute from "./components/PrivateRoute";
-import ForgotPassword from "./pages/ForgotPassword";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Profile from "./pages/Profile";
-import InstitutionSearch from './pages/InstitutionSearch';
-import Sidebar from './components/Sidebar';
-import SellItem from './pages/SellItem';
+import { Navbar, PrivateRoute, Sidebar } from './components'
+import {
+  ForgotPassword,
+  Home,
+  Login,
+  Register,
+  Profile,
+  QuerySearch,
+  SellItem,
+  SingleListings,
+  MyProduct,
+  FavouriteList,
+  FavouriteSingleList,
+} from "./pages";
+
 import Logo from "./assets/logo-plain2-1.png";
-import Listings from './pages/Listings';
-import Myproduct from './pages/MyProduct';
-import FavouriteList from './pages/FavouriteList';
-import FavouriteSingleList from './pages/FavouriteSingleList';
-import ProductSearchPage from './pages/ProductSearchPage';
 
 function App() {
   const [matches, setMatches] = useState(
@@ -46,27 +45,23 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route
-                path="/institution/:institutionName"
-                element={<InstitutionSearch />}
-              />
-              <Route
-                path="/institution/:institutionName/:productName"
-                element={<ProductSearchPage />}
+                path="/institution/:queryName"
+                element={<QuerySearch />}
               />
               <Route
                 path="/institution/:institutionName/:productName/:productId"
-                element={<Listings />}
+                element={<SingleListings />}
               />
+                <Route path="/favourites" element={<FavouriteList />} />
               <Route
                 path="/favourites/:institutionName/:productName/:productId"
                 element={<FavouriteSingleList />}
               />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/favourites" element={<FavouriteList />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/sell" element={<SellItem />} />
-              <Route path="/my-product" element={<Myproduct />} />
+              <Route path="/my-product" element={<MyProduct />} />
               <Route path="/profile" element={<PrivateRoute />}>
                 <Route path="/profile" element={<Profile />} />
               </Route>

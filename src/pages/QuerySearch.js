@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   collection,
   getDocs,
@@ -10,13 +10,15 @@ import {
   startAfter,
 } from "firebase/firestore";
 import { db } from "../firebase.config";
-import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
-import InstitutionListItem from "./InstitutionListItem";
+import InstitutionListItem from "../components/QueryListItem";
+import { HiSearch } from "react-icons/hi";
 
-const ProductSearchPage = () => {
+const QuerySearch = () => {
+  const location = useLocation()
   const [listings, setListings] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [queryName, setQueryName] = useState(location.state.queryName);
   const [lastFetchedListing, setLastFetchedListing] = useState(null);
 
   const navigate = useNavigate();
@@ -25,37 +27,56 @@ const ProductSearchPage = () => {
 
   useEffect(() => {
     const fetchListings = async () => {
-      // Get reference
+      // Get reference collection from the database
       const listingsRef = collection(db, "listings");
 
-      // create a query
+      // make a query from the collection
       const q = query(
         listingsRef,
-        where("name", "==", params.productName),
+        where("institution", "==", params.queryName),
         orderBy("timestamp", "desc"),
         limit(12)
       );
 
-      const qu = query(
+      const modelq = query(
         listingsRef,
-        where("model", "==", params.productName),
+        where("model", "==", params.queryName),
         orderBy("timestamp", "desc"),
         limit(12)
       );
 
-      // Execute query
+      const nameq = query(
+        listingsRef,
+        where("name", "==", params.queryName),
+        orderBy("timestamp", "desc"),
+        limit(12)
+      );
+
+      // Execute the query
       const querySnap = await getDocs(q);
-      const queryModel = await getDocs(qu);
+      const namequerySnap = await getDocs(nameq);
+      const queryModel = await getDocs(modelq);
 
-
+      // setting pagination on load more. subtracting 1 from the number of length from our query
       const lastVisible = querySnap.docs[querySnap.docs.length - 1];
       setLastFetchedListing(lastVisible);
 
-      const lastSeen = queryModel.docs[queryModel.docs.length - 1];
-      setLastFetchedListing(lastSeen);
+      const lastNameVisible = namequerySnap.docs[namequerySnap.docs.length - 1];
+      setLastFetchedListing(lastNameVisible);
 
+      const lastModelVisible = queryModel.docs[queryModel.docs.length - 1];
+      setLastFetchedListing(lastModelVisible);
+
+      // pushing the fetched list from the query to an array
       let listings = [];
       querySnap.forEach((doc) => {
+        return listings.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+
+      namequerySnap.forEach((doc) => {
         return listings.push({
           id: doc.id,
           data: doc.data(),
@@ -68,11 +89,14 @@ const ProductSearchPage = () => {
           data: doc.data(),
         });
       });
+
       setListings(listings);
       setLoading(false);
     };
     fetchListings();
-  }, [params.productName]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.queryName]);
 
   // pagination / Load more
   const onFetchMoreListings = async () => {
@@ -82,15 +106,23 @@ const ProductSearchPage = () => {
     // create a query
     const q = query(
       listingsRef,
-      where("name", "==", params.productName),
+      where("institution", "==", params.queryName),
       orderBy("timestamp", "desc"),
       startAfter(lastFetchedListing),
       limit(12)
     );
 
-    const qu = query(
+    const nameq = query(
       listingsRef,
-      where("model", "==", params.productName),
+      where("name", "==", params.queryName),
+      orderBy("timestamp", "desc"),
+      startAfter(lastFetchedListing),
+      limit(12)
+    );
+
+    const modelq = query(
+      listingsRef,
+      where("model", "==", params.queryName),
       orderBy("timestamp", "desc"),
       startAfter(lastFetchedListing),
       limit(12)
@@ -98,16 +130,27 @@ const ProductSearchPage = () => {
 
     // Execute query
     const querySnap = await getDocs(q);
-    const queryModel = await getDocs(qu);
+    const namequerySnap = await getDocs(nameq);
+    const queryModel = await getDocs(modelq);
 
     const lastVisible = querySnap.docs[querySnap.docs.length - 1];
     setLastFetchedListing(lastVisible);
 
-    const lastSeen = queryModel.docs[queryModel.docs.length - 1];
-    setLastFetchedListing(lastSeen);
+    const lastNameVisible = namequerySnap.docs[namequerySnap.docs.length - 1];
+    setLastFetchedListing(lastNameVisible);
+
+    const lastModelVisible = queryModel.docs[queryModel.docs.length - 1];
+    setLastFetchedListing(lastModelVisible);
 
     let listings = [];
     querySnap.forEach((doc) => {
+      return listings.push({
+        id: doc.id,
+        data: doc.data(),
+      });
+    });
+
+    namequerySnap.forEach((doc) => {
       return listings.push({
         id: doc.id,
         data: doc.data(),
@@ -125,16 +168,37 @@ const ProductSearchPage = () => {
     setLoading(false);
   };
 
+  /* const productSearch = (e) => {
+    e.preventDefault();
+    navigate(`/institution/${params.queryName}${productCase}`);
+  }; */
+
   return (
     <>
       {loading ? (
         <Spinner description="loading..." />
       ) : listings && listings.length > 0 ? (
         <div>
+          <header className="px-4 bg-primaryBackground h-20 sticky top-0 z-20 w-full pt-2">
+            <form>
+              <div className="flex gap-5 w-full items-center shadow-2xl text-xl">
+                <HiSearch className="absolute ml-3 text-gray-400" />
+                <input
+                  required
+                  type="text"
+                  value={queryName}
+                  placeholder={queryName}
+                  disabled
+                  className="w-full py-3 pl-10 border-2 block shadow focus:outline-none text-gray-700 text-lg font-medium"
+                />
+              </div>
+            </form>
+          </header>
           <h2 className="mt-5 mb-3 px-4">
-            <span className="font-bold">{listings.length}</span> Ad{listings.length === 1 ? '' : 's'} in{" "}
+            <span className="font-bold">{listings.length}</span> Ad
+            {listings.length === 1 ? "" : "s"} in{" "}
             <span className="font-bold capitalize">
-              {params.institutionName}
+              {params.queryName}
             </span>
           </h2>
           <div className=" mx-auto pb-24 px-4">
@@ -161,7 +225,7 @@ const ProductSearchPage = () => {
         <div>
           <div className="max-w-2xl mx-auto py- px-4 sm:py- sm:px-6 lg:max-w-7xl lg:px-8">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-500 m-auto">
-              No {params.productName} from {params.institutionName} return back and try
+              No products based on your search. return to home and try
               another search!
             </h2>
           </div>
@@ -171,4 +235,4 @@ const ProductSearchPage = () => {
   );
 };
 
-export default ProductSearchPage;
+export default QuerySearch;

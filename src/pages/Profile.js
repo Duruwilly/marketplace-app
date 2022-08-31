@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { db } from "../firebase.config";
 import { updateDoc, doc, getDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { FaPen } from 'react-icons/fa'
 
 const Profile = () => {
   const [matches, setMatches] = useState(
@@ -24,16 +25,16 @@ const Profile = () => {
   const auth = getAuth();
 
   const [user, setUser] = useState({
-    userName: '',
-    userNumber: '',
+    userName: "",
+    userNumber: "",
   });
 
-  const textref = useRef(null)
+  const textref = useRef(null);
   const [changeDetails, setChangeDetails] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    number: '',
+    name: "",
+    email: "",
+    number: "",
   });
 
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchUserDetails = async () => {
-      const docRef = doc(db, 'users', auth.currentUser.uid);
+      const docRef = doc(db, "users", auth.currentUser.uid);
       const docSnap = await getDoc(docRef);
       const userProfile = docSnap.data();
       setUser((prevState) => ({
@@ -59,8 +60,7 @@ const Profile = () => {
         email: userProfile.email,
         number: userProfile.mobileNumber,
       }));
-
-    }
+    };
     fetchUserDetails();
   }, [auth.currentUser.uid]);
 
@@ -105,7 +105,6 @@ const Profile = () => {
 
   return (
     <section className="flex">
-      
       <div className="flex-[6] bg-home">
         <div className="h-screen">
           <header className="bg-navbar text-white py-1 px-4">
@@ -122,7 +121,7 @@ const Profile = () => {
                 <Link to="/favourites">Favourites</Link>
               </p>
               <p>
-                <Link to="/my-product">view adverts</Link>
+                <Link to="/my-product">My Adverts</Link>
               </p>
               <p>
                 <Link to="/">Recently viewed</Link>
@@ -133,7 +132,8 @@ const Profile = () => {
                 Profile Details
               </p>
               <div>
-                <form className="space-y-2">
+                <form className="space-y-2 relative">
+                  <div className="flex">
                   <input
                     type="text"
                     id="name"
@@ -142,7 +142,13 @@ const Profile = () => {
                     value={name}
                     onChange={onChange}
                     ref={textref}
-                  />
+                    />
+                    { changeDetails &&
+                    <span className="absolute left-28 text-gray-700">
+                    <FaPen />
+                    </span>
+                    }
+                    </div>
                   <input
                     type="text"
                     id="email"
@@ -150,8 +156,8 @@ const Profile = () => {
                     disabled
                     readOnly
                     value={email}
-                    
                   />
+                  <div className='flex '>
                   <input
                     type="tel"
                     id="number"
@@ -160,26 +166,34 @@ const Profile = () => {
                     autoFocus={changeDetails}
                     value={number}
                     onChange={onChange}
-                  />
+                    />
+                    { changeDetails &&
+                    <span className="absolute left-32 text-gray-700">
+                    <FaPen />
+                    </span>
+                    }
+                    </div>
                 </form>
               </div>
-              <div className="flex items-center justify-center gap-6 mt-10">
-                <p
-                  className="text-white cursor-pointer font-semibold px-4 text-lg rounded-lg bg-primaryBackground"
-                  onClick={() => {
-                    changeDetails && onSubmit();
-                    setChangeDetails((prevState) => !prevState);
-                  }}
-                >
-                  {changeDetails ? "done" : "edit"}
-                </p>
-                <button
-                  type="button"
-                  className="text-white font-semibold px-4 bg-red-800 rounded-lg"
-                  onClick={onLogout}
-                >
-                  Logout
-                </button>
+              <div className="flex items-center justify-center">
+                <div className="max-w-xl w-full px-4 flex border-t border-gray-200 mt-10">
+                  <div className="border-b-4 w-full border-b-purple-800 text-center py-1 font-semibold  text-lg cursor-pointer hover:bg-primaryBackground hover:text-white">
+                    <p
+                      className=""
+                      onClick={() => {
+                        changeDetails && onSubmit();
+                        setChangeDetails((prevState) => !prevState);
+                      }}
+                    >
+                      {changeDetails ? "done" : "edit details"}
+                    </p>
+                  </div>
+                  <div className="bg-red-800 w-full text-gray-200 text-center py-1 font-semibold text-lg cursor-pointer">
+                    <button type="button" onClick={onLogout}>
+                      Logout
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </main>

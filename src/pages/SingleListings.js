@@ -6,7 +6,7 @@ import { db } from "../firebase.config";
 import Spinner from "../components/Spinner";
 import Logo from "../assets/logo-plain2-1.png";
 
-const Listings = () => {
+const SingleListings = () => {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [imgSrc, setimgSrc] = useState("");
@@ -163,4 +163,4 @@ const Listings = () => {
   );
 };
 
-export default Listings;
+export default SingleListings;
