@@ -15,6 +15,8 @@ import {
   MyProduct,
   FavouriteList,
   FavouriteSingleList,
+  Trending,
+  Notification
 } from "./pages";
 
 import Logo from "./assets/logo-plain2-1.png";
@@ -61,10 +63,15 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/sell" element={<SellItem />} />
+              <Route path="/trending" element={<Trending />} />
+              <Route path="/notification" element={<Notification />} />
               <Route path="/my-product" element={<MyProduct />} />
               <Route path="/profile" element={<PrivateRoute />}>
                 <Route path="/profile" element={<Profile />} />
               </Route>
+              <Route path='*' element={ <main className='p-4 font-semibold text-gray-800'>
+                <p>sorry you seems to have entered an invalid url</p>
+              </main> } />
             </Routes>
           </div>
         </div>

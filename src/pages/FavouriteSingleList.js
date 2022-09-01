@@ -79,12 +79,11 @@ const FavouriteSingleList = () => {
               <p>WILLTTA</p>
             </div>
             <div className="grid grid-cols-2 gap-5 text-gray-300 font-semibold mt-2">
-              <a
-                href={`tel:${listing.mobileNumber}`}
+              <Link to='/notification'
                 className="bg-primaryBackground w-full text-center rounded-full py-3"
               >
                 Chat
-              </a>
+              </Link>
               <a
                 href={`tel:${listing.mobileNumber}`}
                 className="bg-primaryBackground w-full text-center rounded-full py-3"

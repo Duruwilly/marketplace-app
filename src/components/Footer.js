@@ -8,13 +8,13 @@ const Footer = () => {
   return (
     <div className="bg-black py-8 text-center text-white mt-6 mb-">
       <div className="flex max-w-xs mx-auto items-center justify-between">
-        <a href="#" rel="noreferer" target="_blank">
+        <a href="facebook.com/prince.duru.355@facebook.com" rel="noreferer" target="_blank">
           <FaFacebookF />
         </a>
-        <a href="#" rel="noreferer" target="_blank">
+        <a href="twitter.com/PrincewillDuruU" rel="noreferer" target="_blank">
           <FaTwitter />
         </a>
-        <a href="#" rel="noreferer" target="_blank">
+        <a href="linkedin.com/in/princewill4duru" rel="noreferer" target="_blank">
           <FaLinkedinIn />
         </a>
         <a href="#" rel="noreferer" target="_blank">

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Logo from "../assets/logo-plain2-1.png";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import {
   collection,
   getDocs,
@@ -22,18 +22,6 @@ const Myproduct = () => {
   const auth = getAuth();
   const navigate = useNavigate();
   const isMounted = useRef(true);
-  /* const handleDelete = async (listingId) => {
-   try {
-    await deleteDoc(doc(db, "listings", listingId));
-    const updatedListing = (listingId) => {
-     myProducts.filter((product) => product.id !== listingId)
-    }
-    setMyProducts(updatedListing)
-   } catch (error) {
-    console.log(error);
-      toast.error("error deleting");
-   }
-  } */
   
   const handleDelete = async (listingId) => {
    if(window.confirm('Are you sure you want to delete?')) {

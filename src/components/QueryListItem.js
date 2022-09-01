@@ -5,7 +5,7 @@ import { db } from "../firebase.config";
 import { toast } from "react-toastify";
 import { AiFillCamera, AiFillHeart } from "react-icons/ai";
 
-const InstitutionListItem = ({ listing, id }) => {
+const QueryListItem = ({ listing, id }) => {
   const auth = getAuth();
   const addToFavourite = async (favourite) => {
     onAuthStateChanged(auth, (user) => {
@@ -74,7 +74,7 @@ const InstitutionListItem = ({ listing, id }) => {
               <a href={`tel:${listing.mobileNumber}`}>Call</a>
             </div>
             <div className="bg-purple-800 w-full text-gray-200 text-center py-1">
-              <a href={`tel:${listing.mobileNumber}`}>Chat</a>
+              <Link to='/notification'>Chat</Link>
             </div>
           </div>
           <div className="text-white absolute m-auto px-1 top-0 bg-opacity-40 text-opacity-80 bg-white rounded-lg">
@@ -99,4 +99,4 @@ const InstitutionListItem = ({ listing, id }) => {
   );
 };
 
-export default InstitutionListItem;
+export default QueryListItem;

@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { AiFillCamera, AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { AiFillCamera } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { Link } from 'react-router-dom'
 
@@ -45,7 +44,7 @@ const MyProductListings = ({ listing, id, handleDelete }) => {
                 <a href={`tel:${listing.mobileNumber}`}>Call</a>
               </div>
               <div className="bg-purple-800 w-full text-gray-200 text-center py-1">
-                <a href={`tel:${listing.mobileNumber}`}>Chat</a>
+                <Link to='/notification'>Chat</Link>
               </div>
             </div>
             <div className='text-white absolute m-auto px-1 top-0 right- bg-opacity-40 text-opacity-80 bg-white rounded-lg'>

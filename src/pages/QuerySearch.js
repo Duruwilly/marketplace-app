@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import {
   collection,
   getDocs,
@@ -20,8 +20,6 @@ const QuerySearch = () => {
   const [loading, setLoading] = useState(true);
   const [queryName, setQueryName] = useState(location.state.queryName);
   const [lastFetchedListing, setLastFetchedListing] = useState(null);
-
-  const navigate = useNavigate();
 
   const params = useParams();
 

@@ -7,16 +7,6 @@ import { toast } from "react-toastify";
 import { FaPen } from 'react-icons/fa'
 
 const Profile = () => {
-  const [matches, setMatches] = useState(
-    window.matchMedia("(min-width: 980px)").matches
-  );
-
-  useEffect(() => {
-    window
-      .matchMedia("(min-width: 980px)")
-      .addEventListener("change", (e) => setMatches(e.matches));
-  }, []);
-
   const profileName =
     "appearance-none rounded-none relative block w-full px-3 py-2 bg-transparent focus:outline-none";
   const profileNameActive =
@@ -104,8 +94,7 @@ const Profile = () => {
   const { name, email, number } = formData;
 
   return (
-    <section className="flex">
-      <div className="flex-[6] bg-home">
+    <section className="">
         <div className="h-screen">
           <header className="bg-navbar text-white py-1 px-4">
             <p className="font-bold text-xl">Welcome {name}</p>
@@ -198,7 +187,6 @@ const Profile = () => {
             </div>
           </main>
         </div>
-      </div>
     </section>
   );
 };

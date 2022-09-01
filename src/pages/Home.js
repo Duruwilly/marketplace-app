@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CategoryData } from "../components/NavbarMenu";
+import { CategoryData } from "../components/HomeProductData";
 import Footer from "../components/Footer";
 import Logo from "../assets/logo-plain2-1.png";
 import { HiSearch } from "react-icons/hi";
@@ -89,7 +89,7 @@ const Home = () => {
           <div className="grid gap-8 row-gap-5 md:row-gap-8 lg:grid-cols-3 mt-3">
             <div className="p-5 duration-300 transform bg-white rounded shadow-2xl hover:translate-y-2">
               <div className="flex items-center mb-2">
-                <p className="flex items-center justify-center w-10 mr-2 text-lg font-bold text-white rounded-full bg-primaryBackground">
+                <p className="flex items-center justify-center w-10 h-10 mr-2 text-lg font-bold text-white rounded-full bg-primaryBackground">
                   1
                 </p>
                 <p className="text-lg font-bold leading-5">Sign up</p>
@@ -100,7 +100,7 @@ const Home = () => {
             </div>
             <div className="p-5 duration-300 transform bg-white rounded shadow-2xl hover:translate-y-2">
               <div className="flex items-center mb-2">
-                <p className="flex items-center justify-center w-10 mr-2 text-lg font-bold text-white rounded-full bg-primaryBackground">
+                <p className="flex items-center justify-center w-10 h-10 mr-2 text-lg font-bold text-white rounded-full bg-primaryBackground">
                   2
                 </p>
                 <p className="text-lg font-bold leading-5">Sell it</p>
@@ -111,7 +111,7 @@ const Home = () => {
             </div>
             <div className="p-5 duration-300 transform bg-white rounded shadow-2xl hover:translate-y-2">
               <div className="flex items-center mb-2">
-                <p className="flex items-center justify-center w-10 mr-2 text-lg font-bold text-white rounded-full bg-primaryBackground">
+                <p className="flex items-center justify-center w-10 h-10 mr-2 text-lg font-bold text-white rounded-full bg-primaryBackground">
                   3
                 </p>
                 <p className="text-lg font-bold leading-5">Cash out</p>

@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import Logo from '../assets/logo-plain2-1.png'
 import { Menu } from './MenuLinks'

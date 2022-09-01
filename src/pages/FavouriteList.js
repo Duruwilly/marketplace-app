@@ -53,7 +53,7 @@ function Wishlist() {
         if (user) {
           fetchFavouriteList();
         } else if (!user) {
-          navigate("/sign-in");
+          navigate("/login");
           toast.info(
             "Please log in",
             { toastId: "r34-xAcu9#@(*" },
