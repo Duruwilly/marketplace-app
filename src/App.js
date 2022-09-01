@@ -16,6 +16,7 @@ import {
   FavouriteList,
   FavouriteSingleList,
   Trending,
+  Categories,
   Notification
 } from "./pages";
 
@@ -64,6 +65,7 @@ function App() {
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/sell" element={<SellItem />} />
               <Route path="/trending" element={<Trending />} />
+              <Route path="/categories/:categoriesName" element={<Categories />} />
               <Route path="/notification" element={<Notification />} />
               <Route path="/my-product" element={<MyProduct />} />
               <Route path="/profile" element={<PrivateRoute />}>

@@ -115,7 +115,7 @@ function Wishlist() {
       ) : (
         <div className="flex justify-center align-center mt-24">
           <h1 className="font-medium title-font mb-2 text-gray-900">
-            You Have not added any item to your wish
+            You Have no favourite items
           </h1>
         </div>
       )}

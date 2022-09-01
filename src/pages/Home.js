@@ -72,12 +72,15 @@ const Home = () => {
           <div className="flex flex-wrap -m-4">
             {CategoryData.map((list) => (
               <div key={list.id} className="px-4 pt-2 md:w-1/3">
-                <div className="h-full bg-gray-600 overflow-hidden rounded-lg shadow-2xl">
+                <Link to={`/categories${list.path}`}>
+                  <div className="h-full bg-black overflow-hidden rounded-lg shadow-2xl">
+
                   <img src={list.src} alt={list.src} />
-                  <h1 className="text-center capitalize font-semibold text-xl py-2">
+                  <h1 className="text-center capitalize font-semibold text-xl py-2 text-white">
                     {list.name}
                   </h1>
-                </div>
+                  </div>
+                </Link>
               </div>
             ))}
           </div>

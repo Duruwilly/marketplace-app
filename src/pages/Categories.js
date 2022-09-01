@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useLocation } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   collection,
   getDocs,
@@ -14,10 +14,12 @@ import Spinner from "../components/Spinner";
 import QueryListItem from "../components/QueryListItem";
 import Logo from "../assets/logo-plain2-1.png";
 
-const Trending = () => {
+const Categories = () => {
   const [listings, setListings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [lastFetchedListing, setLastFetchedListing] = useState(null);
+
+  const params = useParams()
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -27,35 +29,35 @@ const Trending = () => {
       // make a query from the collection
       const modelq = query(
         listingsRef,
-        where("categories", "==", "mobile phones"),
+        where("categories", "==", params.categoriesName),
         orderBy("timestamp", "desc"),
         limit(10)
       );
 
       const nameq = query(
         listingsRef,
-        where("categories", "==", "laptops"),
+        where("categories", "==", params.categoriesName),
         orderBy("timestamp", "desc"),
         limit(10)
       );
 
       const electronicsq = query(
         listingsRef,
-        where("categories", "==", "electronics"),
+        where("categories", "==", params.categoriesName),
         orderBy("timestamp", "desc"),
         limit(10)
       );
 
       const furnituresq = query(
         listingsRef,
-        where("categories", "==", "furnitures"),
+        where("categories", "==", params.categoriesName),
         orderBy("timestamp", "desc"),
         limit(10)
       );
 
       const othersq = query(
         listingsRef,
-        where("categories", "==", "others(specify)"),
+        where("categories", "==", params.categoriesName),
         orderBy("timestamp", "desc"),
         limit(10)
       );
@@ -78,7 +80,8 @@ const Trending = () => {
       const lastFurnituresVisible = queryModel.docs[queryModel.docs.length - 1];
       setLastFetchedListing(lastFurnituresVisible);
 
-      const lastElectronicsVisible = queryModel.docs[queryModel.docs.length - 1];
+      const lastElectronicsVisible =
+        queryModel.docs[queryModel.docs.length - 1];
       setLastFetchedListing(lastElectronicsVisible);
 
       const lastOthersVisible = queryModel.docs[queryModel.docs.length - 1];
@@ -87,10 +90,10 @@ const Trending = () => {
       // pushing the fetched list from the query to an array
       let listings = [];
       namequerySnap.forEach((doc) => {
-          return listings.push({
-            id: doc.id,
-            data: doc.data(),
-          });
+        return listings.push({
+          id: doc.id,
+          data: doc.data(),
+        });
       });
 
       queryModel.forEach((doc) => {
@@ -123,12 +126,11 @@ const Trending = () => {
 
       setListings(listings);
       setLoading(false);
-      
     };
     fetchListings();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [params.categoriesName]);
 
   // pagination / Load more
   const onFetchMoreListings = async () => {
@@ -139,35 +141,35 @@ const Trending = () => {
 
     const modelq = query(
       listingsRef,
-      where("categories", "==", "mobile phones"),
+      where("categories", "==", params.categoriesName),
       orderBy("timestamp", "desc"),
       limit(10)
     );
 
     const nameq = query(
       listingsRef,
-      where("categories", "==", "laptops"),
+      where("categories", "==", params.categoriesName),
       orderBy("timestamp", "desc"),
       limit(10)
     );
 
     const electronicsq = query(
       listingsRef,
-      where("categories", "==", "electronics"),
+      where("categories", "==", params.categoriesName),
       orderBy("timestamp", "desc"),
       limit(10)
     );
 
     const furnituresq = query(
       listingsRef,
-      where("categories", "==", "furnitures"),
+      where("categories", "==", params.categoriesName),
       orderBy("timestamp", "desc"),
       limit(10)
     );
 
     const othersq = query(
       listingsRef,
-      where("categories", "==", "others(specify)"),
+      where("categories", "==", params.categoriesName),
       orderBy("timestamp", "desc"),
       limit(10)
     );
@@ -246,8 +248,7 @@ const Trending = () => {
               <img src={Logo} alt="logo" className="h-16 mt-6" />
             </Link>
           </header>
-          <h2 className="px-4 font-semibold py-4 text-xl">Trending Product</h2>
-          <div className=" mx-auto pb-24 px-4">
+          <div className=" mx-auto pb-24 px-4 mt-10">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
               {listings?.map((listing) => (
                 <div key={listing.id} className="group relative">
@@ -272,4 +273,4 @@ const Trending = () => {
   );
 };
 
-export default Trending;
+export default Categories;
