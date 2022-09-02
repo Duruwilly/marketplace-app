@@ -8,7 +8,6 @@ import {
   where,
   query,
   orderBy,
-  limit,
   doc,
   deleteDoc,
 } from "firebase/firestore";
@@ -20,8 +19,6 @@ const Myproduct = () => {
   const [myProducts, setMyProducts] = useState(null);
   const [loading, setLoading] = useState(true);
   const auth = getAuth();
-  const navigate = useNavigate();
-  const isMounted = useRef(true);
   
   const handleDelete = async (listingId) => {
    if(window.confirm('Are you sure you want to delete?')) {

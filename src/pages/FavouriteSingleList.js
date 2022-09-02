@@ -13,7 +13,6 @@ const FavouriteSingleList = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const auth = getAuth();
 
   useEffect(() => {
     const fetchProduct = async () => {

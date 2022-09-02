@@ -223,7 +223,7 @@ const QuerySearch = () => {
         <div>
           <div className="max-w-2xl mx-auto py- px-4 sm:py- sm:px-6 lg:max-w-7xl lg:px-8">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-500 m-auto">
-              No products based on your search. return to home and try
+              There are no result based on your search. kindly return to home and try
               another search!
             </h2>
           </div>

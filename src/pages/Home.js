@@ -56,10 +56,10 @@ const Home = () => {
             </div>
           </form>
         </div>
-        <div className="bg-primaryBackground py-16 px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-4 lg:py-20 sm:text-center mb-16 sm:mb-0">
+        <div className="bg-primaryBackground py-16 px-4 lg:py-20 text-center mb-16">
           <div>
-            <h2 className="max-w-lg mb-5 font-sans text-3xl font-bold leading-none tracking-tight text-white sm:text-4xl md:mx-auto">
-              The marketplace for student
+            <h2 className="mb-5 font-sans text-3xl font-bold leading-none tracking-tight text-white sm:text-4xl md:mx-auto text-center">
+              The marketplace for students
             </h2>
             <p className="text-base text-indigo-100 md:text-lg">
               Buying and selling products from friends within your institution
@@ -68,17 +68,18 @@ const Home = () => {
           </div>
         </div>
         <div className="px-4">
-          <h1 className="mb-3 mt-5 font-bold text-2xl">Featured products</h1>
+          <h1 className="mb-4 mt-5 text-3xl font-extrabold tracking-tight text-gray-900">
+            Top Categories
+          </h1>
           <div className="flex flex-wrap -m-4">
             {CategoryData.map((list) => (
               <div key={list.id} className="px-4 pt-2 md:w-1/3">
                 <Link to={`/categories${list.path}`}>
                   <div className="h-full bg-black overflow-hidden rounded-lg shadow-2xl">
-
-                  <img src={list.src} alt={list.src} />
-                  <h1 className="text-center capitalize font-semibold text-xl py-2 text-white">
-                    {list.name}
-                  </h1>
+                    <img src={list.src} alt={list.src} />
+                    <h1 className="text-center capitalize font-semibold text-xl py-2 text-white">
+                      {list.name}
+                    </h1>
                   </div>
                 </Link>
               </div>
