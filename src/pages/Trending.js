@@ -7,6 +7,7 @@ import {
   where,
   orderBy,
   limit,
+  startAfter,
 } from "firebase/firestore";
 import { db } from "../firebase.config";
 import Spinner from "../components/Spinner";
@@ -74,13 +75,13 @@ const Trending = () => {
       const lastModelVisible = queryModel.docs[queryModel.docs.length - 1];
       setLastFetchedListing(lastModelVisible);
 
-      const lastFurnituresVisible = queryModel.docs[queryModel.docs.length - 1];
+      const lastFurnituresVisible = furnituresModel.docs[furnituresModel.docs.length - 1];
       setLastFetchedListing(lastFurnituresVisible);
 
-      const lastElectronicsVisible = queryModel.docs[queryModel.docs.length - 1];
+      const lastElectronicsVisible = electronicsModel.docs[electronicsModel.docs.length - 1];
       setLastFetchedListing(lastElectronicsVisible);
 
-      const lastOthersVisible = queryModel.docs[queryModel.docs.length - 1];
+      const lastOthersVisible = othersModel.docs[othersModel.docs.length - 1];
       setLastFetchedListing(lastOthersVisible);
 
       // pushing the fetched list from the query to an array
@@ -140,6 +141,7 @@ const Trending = () => {
       listingsRef,
       where("categories", "==", "mobile phones"),
       orderBy("timestamp", "desc"),
+      startAfter(lastFetchedListing),
       limit(10)
     );
 
@@ -147,6 +149,7 @@ const Trending = () => {
       listingsRef,
       where("categories", "==", "laptops"),
       orderBy("timestamp", "desc"),
+      startAfter(lastFetchedListing),
       limit(10)
     );
 
@@ -154,6 +157,7 @@ const Trending = () => {
       listingsRef,
       where("categories", "==", "electronics"),
       orderBy("timestamp", "desc"),
+      startAfter(lastFetchedListing),
       limit(10)
     );
 
@@ -161,6 +165,7 @@ const Trending = () => {
       listingsRef,
       where("categories", "==", "furnitures"),
       orderBy("timestamp", "desc"),
+      startAfter(lastFetchedListing),
       limit(10)
     );
 
@@ -168,6 +173,7 @@ const Trending = () => {
       listingsRef,
       where("categories", "==", "others(specify)"),
       orderBy("timestamp", "desc"),
+      startAfter(lastFetchedListing),
       limit(10)
     );
 
@@ -185,13 +191,13 @@ const Trending = () => {
     const lastModelVisible = queryModel.docs[queryModel.docs.length - 1];
     setLastFetchedListing(lastModelVisible);
 
-    const lastFurnituresVisible = queryModel.docs[queryModel.docs.length - 1];
+    const lastFurnituresVisible = furnituresModel.docs[furnituresModel.docs.length - 1];
     setLastFetchedListing(lastFurnituresVisible);
 
-    const lastElectronicsVisible = queryModel.docs[queryModel.docs.length - 1];
+    const lastElectronicsVisible = electronicsModel.docs[electronicsModel.docs.length - 1];
     setLastFetchedListing(lastElectronicsVisible);
 
-    const lastOthersVisible = queryModel.docs[queryModel.docs.length - 1];
+    const lastOthersVisible = othersModel.docs[othersModel.docs.length - 1];
     setLastFetchedListing(lastOthersVisible);
 
     let listings = [];
@@ -224,7 +230,6 @@ const Trending = () => {
    });
 
    othersModel.forEach((doc) => {
-     
        return listings.push({
          id: doc.id,
          data: doc.data(),

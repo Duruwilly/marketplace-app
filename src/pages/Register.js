@@ -157,7 +157,6 @@ const Register = () => {
               <Button text="Sign up" />
             </form>
 
-            <OAuth />
             <p className="text-center">
               Already have an account?{" "}
               <Link

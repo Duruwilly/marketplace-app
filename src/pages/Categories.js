@@ -7,6 +7,7 @@ import {
   where,
   orderBy,
   limit,
+  startAfter
 } from "firebase/firestore";
 import { db } from "../firebase.config";
 import Spinner from "../components/Spinner";
@@ -33,90 +34,17 @@ const Categories = () => {
         limit(10)
       );
 
-      const nameq = query(
-        listingsRef,
-        where("categories", "==", params.categoriesName),
-        orderBy("timestamp", "desc"),
-        limit(10)
-      );
-
-      const electronicsq = query(
-        listingsRef,
-        where("categories", "==", params.categoriesName),
-        orderBy("timestamp", "desc"),
-        limit(10)
-      );
-
-      const furnituresq = query(
-        listingsRef,
-        where("categories", "==", params.categoriesName),
-        orderBy("timestamp", "desc"),
-        limit(10)
-      );
-
-      const othersq = query(
-        listingsRef,
-        where("categories", "==", params.categoriesName),
-        orderBy("timestamp", "desc"),
-        limit(10)
-      );
-
       // Execute the query
-      const namequerySnap = await getDocs(nameq);
-      const queryModel = await getDocs(modelq);
-      const electronicsModel = await getDocs(electronicsq);
-      const furnituresModel = await getDocs(furnituresq);
-      const othersModel = await getDocs(othersq);
+      const namequerySnap = await getDocs(modelq);
 
       // setting pagination on load more. subtracting 1 from the number of length from our query
 
       const lastNameVisible = namequerySnap.docs[namequerySnap.docs.length - 1];
       setLastFetchedListing(lastNameVisible);
 
-      const lastModelVisible = queryModel.docs[queryModel.docs.length - 1];
-      setLastFetchedListing(lastModelVisible);
-
-      const lastFurnituresVisible = queryModel.docs[queryModel.docs.length - 1];
-      setLastFetchedListing(lastFurnituresVisible);
-
-      const lastElectronicsVisible =
-        queryModel.docs[queryModel.docs.length - 1];
-      setLastFetchedListing(lastElectronicsVisible);
-
-      const lastOthersVisible = queryModel.docs[queryModel.docs.length - 1];
-      setLastFetchedListing(lastOthersVisible);
-
       // pushing the fetched list from the query to an array
       let listings = [];
       namequerySnap.forEach((doc) => {
-        return listings.push({
-          id: doc.id,
-          data: doc.data(),
-        });
-      });
-
-      queryModel.forEach((doc) => {
-        return listings.push({
-          id: doc.id,
-          data: doc.data(),
-        });
-      });
-
-      electronicsModel.forEach((doc) => {
-        return listings.push({
-          id: doc.id,
-          data: doc.data(),
-        });
-      });
-
-      furnituresModel.forEach((doc) => {
-        return listings.push({
-          id: doc.id,
-          data: doc.data(),
-        });
-      });
-
-      othersModel.forEach((doc) => {
         return listings.push({
           id: doc.id,
           data: doc.data(),
@@ -138,95 +66,22 @@ const Categories = () => {
 
     // create a query
 
-    const modelq = query(
-      listingsRef,
-      where("categories", "==", params.categoriesName),
-      orderBy("timestamp", "desc"),
-      limit(10)
-    );
-
     const nameq = query(
       listingsRef,
       where("categories", "==", params.categoriesName),
       orderBy("timestamp", "desc"),
-      limit(10)
-    );
-
-    const electronicsq = query(
-      listingsRef,
-      where("categories", "==", params.categoriesName),
-      orderBy("timestamp", "desc"),
-      limit(10)
-    );
-
-    const furnituresq = query(
-      listingsRef,
-      where("categories", "==", params.categoriesName),
-      orderBy("timestamp", "desc"),
-      limit(10)
-    );
-
-    const othersq = query(
-      listingsRef,
-      where("categories", "==", params.categoriesName),
-      orderBy("timestamp", "desc"),
+      startAfter(lastFetchedListing),
       limit(10)
     );
 
     // Execute the query
     const namequerySnap = await getDocs(nameq);
-    const queryModel = await getDocs(modelq);
-    const electronicsModel = await getDocs(electronicsq);
-    const furnituresModel = await getDocs(furnituresq);
-    const othersModel = await getDocs(othersq);
-    
 
     const lastNameVisible = namequerySnap.docs[namequerySnap.docs.length - 1];
     setLastFetchedListing(lastNameVisible);
 
-    const lastModelVisible = queryModel.docs[queryModel.docs.length - 1];
-    setLastFetchedListing(lastModelVisible);
-
-    const lastFurnituresVisible = queryModel.docs[queryModel.docs.length - 1];
-    setLastFetchedListing(lastFurnituresVisible);
-
-    const lastElectronicsVisible = queryModel.docs[queryModel.docs.length - 1];
-    setLastFetchedListing(lastElectronicsVisible);
-
-    const lastOthersVisible = queryModel.docs[queryModel.docs.length - 1];
-    setLastFetchedListing(lastOthersVisible);
-
     let listings = [];
    namequerySnap.forEach((doc) => {
-       return listings.push({
-         id: doc.id,
-         data: doc.data(),
-       });
-   });
-
-   queryModel.forEach((doc) => {
-       return listings.push({
-         id: doc.id,
-         data: doc.data(),
-       });
-   });
-
-   electronicsModel.forEach((doc) => {
-       return listings.push({
-         id: doc.id,
-         data: doc.data(),
-       });
-   });
-
-   furnituresModel.forEach((doc) => {
-       return listings.push({
-         id: doc.id,
-         data: doc.data(),
-       });
-   });
-
-   othersModel.forEach((doc) => {
-     
        return listings.push({
          id: doc.id,
          data: doc.data(),

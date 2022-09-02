@@ -58,7 +58,7 @@ const Home = () => {
         </div>
         <div className="bg-primaryBackground py-16 px-4 lg:py-20 text-center mb-16">
           <div>
-            <h2 className="mb-5 font-sans text-3xl font-bold leading-none tracking-tight text-white sm:text-4xl md:mx-auto text-center">
+            <h2 className="mb-5 max-w-lg font-sans text-3xl font-bold leading-none tracking-tight text-white sm:text-4xl md:mx-auto text-center">
               The marketplace for students
             </h2>
             <p className="text-base text-indigo-100 md:text-lg">

@@ -71,7 +71,7 @@ function App() {
               <Route path="/profile" element={<PrivateRoute />}>
                 <Route path="/profile" element={<Profile />} />
               </Route>
-              <Route path='*' element={ <main className='p-4 font-semibold text-gray-800'>
+              <Route path='*' element={ <main className='p-4 font-semibold text-gray-800 mt-36'>
                 <p>sorry you seems to have entered an invalid url</p>
               </main> } />
             </Routes>

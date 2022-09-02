@@ -123,8 +123,7 @@ const Login = () => {
 
               <Button text="Sign in" />
             </form>
-
-            <OAuth />
+            
             <p className="text-center">
               Don't have an account?{" "}
               <Link

@@ -166,11 +166,6 @@ const QuerySearch = () => {
     setLoading(false);
   };
 
-  /* const productSearch = (e) => {
-    e.preventDefault();
-    navigate(`/institution/${params.queryName}${productCase}`);
-  }; */
-
   return (
     <>
       {loading ? (
