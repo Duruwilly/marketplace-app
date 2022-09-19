@@ -5,6 +5,9 @@ import { db } from "../firebase.config";
 import { updateDoc, doc, getDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { FaPen } from 'react-icons/fa'
+import { useDispatch } from 'react-redux'
+import { registerSucess } from '../redux/userSlice'
+
 
 const Profile = () => {
   const profileName =
@@ -14,17 +17,19 @@ const Profile = () => {
 
   const auth = getAuth();
 
+  const dispatch = useDispatch()
+
   const [user, setUser] = useState({
-    userName: "",
+    name: "",
     userNumber: "",
   });
 
   const textref = useRef(null);
   const [changeDetails, setChangeDetails] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
+    userName: "",
     email: "",
-    number: "",
+    mobileNumber: "",
   });
 
   const navigate = useNavigate();
@@ -34,6 +39,7 @@ const Profile = () => {
     navigate("/");
   };
 
+  
   useEffect(() => {
     const fetchUserDetails = async () => {
       const docRef = doc(db, "users", auth.currentUser.uid);
@@ -41,37 +47,38 @@ const Profile = () => {
       const userProfile = docSnap.data();
       setUser((prevState) => ({
         ...prevState,
-        userName: userProfile.name,
+        name: userProfile.userName,
         userNumber: userProfile.mobileNumber,
       }));
       setFormData((prevState) => ({
         ...prevState,
-        name: userProfile.name,
+        userName: userProfile.userName,
         email: userProfile.email,
-        number: userProfile.mobileNumber,
+        mobileNumber: userProfile.mobileNumber,
       }));
     };
     fetchUserDetails();
   }, [auth.currentUser.uid]);
-
-  const { userName, userNumber } = user;
+  
+  const { name, userNumber } = user;
   const onSubmit = async () => {
     try {
-      if (name !== userName || number !== userNumber) {
+      if (userName !== name || mobileNumber !== userNumber) {
         //update display name in fb
         await updateProfile(auth.currentUser, {
-          displayName: name,
-          mobileNumber: number,
+          displayName: userName,
+          mobileNumber: mobileNumber,
         });
-      } else if (name === userName && number === userNumber) {
+        dispatch(registerSucess({ ...formData }));
+      } else if (userName === name && mobileNumber === userNumber) {
         toast.error("No changes was made", { toastId: "6yfvyuwevyufgvwefyuv" });
         return;
       }
       // update in firestore
       const userRef = doc(db, "users", auth.currentUser.uid);
       await updateDoc(userRef, {
-        name: name,
-        mobileNumber: number,
+        userName: userName,
+        mobileNumber: mobileNumber,
       });
       toast.success("Profile updated", { toastId: "6yfvyuwevyufgvwefyuv" });
     } catch (error) {
@@ -80,24 +87,25 @@ const Profile = () => {
       });
     }
   };
-
+  
   const onfocusElem = () => {
     textref.current.focus();
   };
-
+  
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
   };
-  const { name, email, number } = formData;
-
+  const { userName, email, mobileNumber } = formData;
+  
+  
   return (
     <section className="">
         <div className="h-screen">
           <header className="bg-navbar text-white py-1 px-4">
-            <p className="font-bold text-xl">Welcome {name}</p>
+            <p className="font-bold text-xl">Welcome {userName}</p>
             <p>{email}</p>
           </header>
 
@@ -125,10 +133,10 @@ const Profile = () => {
                   <div className="flex">
                   <input
                     type="text"
-                    id="name"
+                    id="userName"
                     className={!changeDetails ? profileName : profileNameActive}
                     disabled={!changeDetails}
-                    value={name}
+                    value={userName}
                     onChange={onChange}
                     ref={textref}
                     />
@@ -149,11 +157,11 @@ const Profile = () => {
                   <div className='flex '>
                   <input
                     type="tel"
-                    id="number"
+                    id="mobileNumber"
                     className={!changeDetails ? profileName : profileNameActive}
                     disabled={!changeDetails}
                     autoFocus={changeDetails}
-                    value={number}
+                    value={mobileNumber}
                     onChange={onChange}
                     />
                     { changeDetails &&

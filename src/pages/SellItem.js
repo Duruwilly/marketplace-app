@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo-plain2-1.png";
 import Button from "../components/Button";
+import { useSelector } from 'react-redux';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   getStorage,
@@ -17,6 +18,7 @@ import { v4 as uuidv4 } from "uuid";
 import Spinner from "../components/Spinner";
 
 const SellItem = () => {
+  const userProfileInfo = useSelector((state) => state.user.userInfo);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     nameCase: "",
@@ -31,7 +33,6 @@ const SellItem = () => {
     brand: "",
     rom: "",
     description: "",
-    mobileNumber: "",
     categories: "",
     images: {},
   });
@@ -47,7 +48,6 @@ const SellItem = () => {
     condition,
     institutionCase,
     description,
-    mobileNumber,
     categories,
     images,
   } = formData;
@@ -172,11 +172,11 @@ const SellItem = () => {
   if (loading) return <Spinner description="uploading..." />;
   return (
     <section>
-        <header className="bg-primaryBackground flex justify-center px-4 sticky top-0 z-20">
-          <Link to="/" className="mx-0 mb-6">
-            <img src={Logo} alt="logo" className="h-16 mt-6" />
-          </Link>
-        </header>
+      <header className="bg-primaryBackground flex justify-center px-4 sticky top-0 z-20">
+        <Link to="/" className="mx-0 mb-6">
+          <img src={Logo} alt="logo" className="h-16 mt-6" />
+        </Link>
+      </header>
       <div className="flex items-center justify-center mt-4 pb-16 mb-12 px-4 overflow-x-hidden">
         <div className="max-w-3xl w-full overflow-x-hidden">
           <form onSubmit={submitForm}>
@@ -185,7 +185,7 @@ const SellItem = () => {
                 <select
                   id="categories"
                   name="categories"
-                  className="purple-900 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-900 focus:border-purple-900 focus:z-10 sm:text-sm"
+                  className="purple-900 appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-900 focus:border-purple-900 focus:z-10 sm:text-sm"
                   value={categories}
                   onChange={onChange}
                   required
@@ -293,17 +293,25 @@ const SellItem = () => {
                     </div>
                     <div className="mt-4">
                       <input
+                        name="userName"
+                        id="userName"
+                        type="text"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
+                        value={userProfileInfo.userName}
+                        disabled
+                      />
+                    </div>
+                    <div className="mt-4">
+                      <input
                         name="mobileNumber"
                         id="mobileNumber"
                         type="text"
                         size="13"
                         maxLength="11"
                         minLength="11"
-                        required
                         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
-                        value={mobileNumber}
-                        placeholder="Mobile Number"
-                        onChange={onChange}
+                        value={userProfileInfo.mobileNumber}
+                        disabled
                       />
                     </div>
                     <div className="mt-4 ">
@@ -511,17 +519,25 @@ const SellItem = () => {
                     </div>
                     <div className="mt-4">
                       <input
+                        name="userName"
+                        id="userName"
+                        type="text"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
+                        value={userProfileInfo.userName}
+                        disabled
+                      />
+                    </div>
+                    <div className="mt-4">
+                      <input
                         name="mobileNumber"
                         id="mobileNumber"
                         type="text"
                         size="13"
                         maxLength="11"
                         minLength="11"
-                        required
                         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
-                        value={mobileNumber}
-                        placeholder="Mobile Number"
-                        onChange={onChange}
+                        value={userProfileInfo.mobileNumber}
+                        disabled
                       />
                     </div>
                     <div className="mt-4 ">
@@ -618,17 +634,25 @@ const SellItem = () => {
                     </div>
                     <div className="mt-4">
                       <input
+                        name="userName"
+                        id="userName"
+                        type="text"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
+                        value={userProfileInfo.userName}
+                        disabled
+                      />
+                    </div>
+                    <div className="mt-4">
+                      <input
                         name="mobileNumber"
                         id="mobileNumber"
                         type="text"
                         size="13"
                         maxLength="11"
                         minLength="11"
-                        required
                         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
-                        value={mobileNumber}
-                        placeholder="Mobile Number"
-                        onChange={onChange}
+                        value={userProfileInfo.mobileNumber}
+                        disabled
                       />
                     </div>
                     <div className="mt-4 ">
@@ -735,17 +759,25 @@ const SellItem = () => {
                     </div>
                     <div className="mt-4">
                       <input
+                        name="userName"
+                        id="userName"
+                        type="text"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
+                        value={userProfileInfo.userName}
+                        disabled
+                      />
+                    </div>
+                    <div className="mt-4">
+                      <input
                         name="mobileNumber"
                         id="mobileNumber"
                         type="text"
                         size="13"
                         maxLength="11"
                         minLength="11"
-                        required
                         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
-                        value={mobileNumber}
-                        placeholder="Mobile Number"
-                        onChange={onChange}
+                        value={userProfileInfo.mobileNumber}
+                        disabled
                       />
                     </div>
                     <div className="mt-4 ">
@@ -852,17 +884,25 @@ const SellItem = () => {
                     </div>
                     <div className="mt-4">
                       <input
+                        name="userName"
+                        id="userName"
+                        type="text"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
+                        value={userProfileInfo.userName}
+                        disabled
+                      />
+                    </div>
+                    <div className="mt-4">
+                      <input
                         name="mobileNumber"
                         id="mobileNumber"
                         type="text"
                         size="13"
                         maxLength="11"
                         minLength="11"
-                        required
                         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
-                        value={mobileNumber}
-                        placeholder="Mobile Number"
-                        onChange={onChange}
+                        value={userProfileInfo.mobileNumber}
+                        disabled
                       />
                     </div>
                     <div className="mt-4 ">
@@ -946,17 +986,24 @@ const SellItem = () => {
                     </div>
                     <div className="mt-4">
                       <input
+                        name="userName"
+                        id="userName"
+                        type="text"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
+                        value={userProfileInfo.userName}
+                        disabled
+                      />
+                    </div>
+                    <div className="mt-4">
+                      <input
                         name="mobileNumber"
                         id="mobileNumber"
                         type="text"
                         size="13"
                         maxLength="11"
                         minLength="11"
-                        required
                         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm caret-purple-700"
-                        value={mobileNumber}
-                        placeholder="Mobile Number"
-                        onChange={onChange}
+                        value={userProfileInfo.mobileNumber}
                         disabled={categories === ""}
                       />
                     </div>

@@ -21,6 +21,7 @@ import {
 } from "./pages";
 
 import Logo from "./assets/logo-plain2-1.png";
+import Reg from './pages/Reg';
 
 function App() {
   const [matches, setMatches] = useState(
@@ -62,6 +63,8 @@ function App() {
               />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/registe" element={<Reg />} />
+              
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/sell" element={<SellItem />} />
               <Route path="/trending" element={<Trending />} />

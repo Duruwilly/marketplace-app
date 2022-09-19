@@ -10,6 +10,7 @@ import Logo from "../assets/logo-plain2-1.png";
 const Login = () => {
   const inputStyle =
     "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 rounded-t-md focus:outline-none focus:border-input-border";
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -42,7 +43,6 @@ const Login = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const auth = getAuth();
 

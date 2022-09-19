@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { AiFillCamera, AiFillHeart } from "react-icons/ai";
 
 const QueryListItem = ({ listing, id }) => {
+
   const auth = getAuth();
   const addToFavourite = async (favourite) => {
     onAuthStateChanged(auth, (user) => {

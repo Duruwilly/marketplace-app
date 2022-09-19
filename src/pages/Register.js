@@ -12,22 +12,26 @@ import { db } from '../firebase.config'
 import Button from "../components/Button";
 import OAuth from '../components/OAuth';
 import Logo from "../assets/logo-plain2-1.png";
+import { useDispatch } from 'react-redux';
+import { registerSucess } from '../redux/userSlice';
 
 const Register = () => {
   const inputStyle = 'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 rounded-t-md focus:outline-none focus:border-input-border'
+
+  const dispatch = useDispatch();
 
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 980px)").matches
   );
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
+    userName: "",
     email: "",
     mobileNumber: "",
     password: "",
   });
 
-  const { name, email, mobileNumber, password } = formData;
+  const { userName, email, mobileNumber, password } = formData;
 
   const navigate = useNavigate();
 
@@ -50,7 +54,7 @@ const Register = () => {
 
   const submitForm = async (e) => {
     e.preventDefault()
-
+    dispatch(registerSucess({ userName, email, mobileNumber }));
     try {
       // getting this value from getAuth
       const auth = getAuth()
@@ -67,16 +71,16 @@ const Register = () => {
 
       // updating the display name
       updateProfile(auth.currentUser, {
-        displayName: name,
+        displayName: userName,
       })
 
       const formDataCopy = {...formData}
       delete formDataCopy.password
       formDataCopy.timestamp = serverTimestamp()
-
       await setDoc(doc(db, 'users', user.uid), formDataCopy)
       toast.success('Account successfully registered')
       navigate('/')
+      
     } catch (error) {
       toast.error('something went wrong with registeration')
     }
@@ -101,9 +105,9 @@ const Register = () => {
               <input
                 type="name"
                 placeholder="Full Name"
-                id="name"
-                name="name"
-                value={name}
+                id="userName"
+                name="userName"
+                value={userName}
                 className={inputStyle}
                 onChange={onChange}
               />
