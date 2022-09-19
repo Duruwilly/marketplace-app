@@ -19,8 +19,8 @@ import Spinner from "../components/Spinner";
 
 const SellItem = () => {
   const userProfileInfo = useSelector((state) => state.user.userInfo);
-  const userName = useSelector((state) => state.user.userName);
-  const mobileNumber = useSelector((state) => state.user.mobileNumber);
+  const userName = useSelector((state) => state.user.userInfo.userName);
+  const mobileNumber = useSelector((state) => state.user.userInfo.mobileNumber);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     nameCase: "",
