@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Spinner } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Button from "../components/Button";
@@ -12,6 +13,7 @@ const Login = () => {
     "appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 rounded-t-md focus:outline-none focus:border-input-border";
 
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -43,6 +45,7 @@ const Login = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const auth = getAuth();
 
@@ -53,11 +56,18 @@ const Login = () => {
       );
 
       if (userCredential.user) {
+        setLoading(false);
         navigate("/");
       }
     } catch (error) {
-      toast.error("invalid User");
+      console.log(error.code);
+      if (error.code === "auth/network-request-failed") {
+        toast.error("Network error. try again");
+      } else {
+        toast.error("Invalid Email or password");
+      }
     }
+    setLoading(false);
   };
 
   return (
@@ -120,10 +130,17 @@ const Login = () => {
                   Forgot your password?
                 </p>
               </Link>
-
-              <Button text="Sign in" />
+              <div>
+                {loading ? (
+                  <div className="group relative w-full flex justify-center py-2 px-4 text-lg font-medium rounded-md text-white bg-primaryBackground focus:outline-none">
+                    <Spinner />
+                  </div>
+                ) : (
+                  <Button text="Sign in" />
+                )}
+              </div>
             </form>
-            
+
             <p className="text-center">
               Don't have an account?{" "}
               <Link

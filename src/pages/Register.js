@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import {toast} from 'react-toastify'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Spinner } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   getAuth,
@@ -19,7 +20,7 @@ const Register = () => {
   const inputStyle = 'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 rounded-t-md focus:outline-none focus:border-input-border'
 
   const dispatch = useDispatch();
-
+  const [loading, setLoading] = useState(false);
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 980px)").matches
   );
@@ -54,35 +55,48 @@ const Register = () => {
 
   const submitForm = async (e) => {
     e.preventDefault()
+    setLoading(true);
     dispatch(registerSucess({ userName, email, mobileNumber }));
     try {
       // getting this value from getAuth
-      const auth = getAuth()
+      const auth = getAuth();
 
       // registering the user with email and password
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
-      )
+      );
 
       // getting the user information
-      const user = userCredential.user
+      const user = userCredential.user;
 
       // updating the display name
       updateProfile(auth.currentUser, {
         displayName: userName,
-      })
+      });
 
-      const formDataCopy = {...formData}
-      delete formDataCopy.password
-      formDataCopy.timestamp = serverTimestamp()
-      await setDoc(doc(db, 'users', user.uid), formDataCopy)
-      toast.success('Account successfully registered')
-      navigate('/')
-      
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
+
+      await setDoc(doc(db, "users", user.uid), formDataCopy);
+      toast.success("Account successfully registered");
+      setLoading(false);
+      navigate("/");
     } catch (error) {
-      toast.error('something went wrong with registeration')
+      if (error.code === "auth/email-already-in-use") {
+        toast.warning("Email has already been registered");
+        setLoading(false);
+        return;
+      } else if (error.code === "auth/weak-password") {
+        toast.warning("Use a strong password");
+        setLoading(false);
+        return;
+      } else {
+        toast.error("something went wrong with registeration. Try again");
+      }
+      setLoading(false);
     }
   }
   
@@ -158,7 +172,15 @@ const Register = () => {
                 className={inputStyle}
                 onChange={onChange}
               />
-              <Button text="Sign up" />
+              <div>
+                {loading ? (
+                  <div className="group relative w-full flex justify-center py-2 px-4 text-lg font-medium rounded-md text-white bg-primaryBackground focus:outline-none">
+                    <Spinner />
+                  </div>
+                ) : (
+                  <Button text="Sign up" />
+                )}
+              </div>
             </form>
 
             <p className="text-center">
