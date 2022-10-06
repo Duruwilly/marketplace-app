@@ -11,9 +11,9 @@ import { registerSucess } from '../redux/userSlice'
 
 const Profile = () => {
   const profileName =
-    "appearance-none rounded-none relative block w-full px-3 py-2 bg-transparent focus:outline-none";
+    "appearance-none rounded-none relative block w-full px-3 py-2 bg-transparent focus:outline-none border-none";
   const profileNameActive =
-    "appearance-none rounded-none relative block w-full px-3 py-2 border-gray-500 border-b bg-transparent focus:outline-none";
+    "appearance-none rounded-none relative block w-full px-3 py-2 border-none bg-transparent focus:outline-none";
 
   const auth = getAuth();
 
