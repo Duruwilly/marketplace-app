@@ -117,6 +117,7 @@ const Register = () => {
             </h2>
             <form className="space-y-4" onSubmit={submitForm}>
               <input
+              required
                 type="name"
                 placeholder="Full Name"
                 id="userName"
@@ -126,6 +127,7 @@ const Register = () => {
                 onChange={onChange}
               />
               <input
+              required
                 type="email"
                 placeholder="Email address"
                 autoComplete="email"
@@ -137,6 +139,7 @@ const Register = () => {
               />
               <div className="relative">
                 <input
+                required
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   autoComplete="current-password"
@@ -168,6 +171,10 @@ const Register = () => {
                 placeholder="Mobile Number"
                 id="mobileNumber"
                 name="mobileNumber"
+                required
+              maxLength='11'
+              minLength='11'
+              size='13'
                 value={mobileNumber}
                 className={inputStyle}
                 onChange={onChange}

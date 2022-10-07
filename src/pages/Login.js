@@ -88,6 +88,7 @@ const Login = () => {
             <form className="space-y-4" onSubmit={onSubmit}>
               <input type="hidden" name="remember" defaultValue="true" />
               <input
+              required
                 type="email"
                 id="email"
                 name="email"
@@ -99,6 +100,7 @@ const Login = () => {
               />
               <div className="relative">
                 <input
+                required
                   type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
